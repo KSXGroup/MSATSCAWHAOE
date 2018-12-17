@@ -1,0 +1,98 @@
+% !TeX spellcheck = zh_CN
+\documentclass[UTF-8]{ctexart}
+\usepackage{titlesec}
+\usepackage{titletoc}
+\usepackage{xeCJK}
+\usepackage[linesnumbered,boxed]{algorithm2e}
+\XeTeXlinebreaklocale "zh" % 设置中文自动断行，否则会溢出
+\XeTeXlinebreakskip = 0pt plus 1pt
+\title{科学计算作业1}
+\author{张文涛 517030910425}
+\linespread{1.5}
+\begin{document}
+	\maketitle
+	\begin{itemize}
+		\item[1.1]即要证明${x_k}$为单调有界数列且极限为$\sqrt{7}$\[ x_{k+1} - x_k  = \frac{1}{2}( \frac{7}{x_k} - x_k)\]
+		易得数列单调递减的条件是$x>\sqrt{7}$或$x<-\sqrt{7}$,由题意得$x_1 = 2$，代入计算得$x_2 = \frac{11}{4}$\newline
+		观察得到，$\forall x \in (\sqrt{7}, \infty)$ 有，$\frac{1}{2}(x_k +\frac{7}{x_k}) > \sqrt{7}$,，且有$x_2 = \frac{11}{4} > \sqrt{7}$，所以\[x_k > \sqrt{7}, \forall k \in [2, \infty)\]所以对于数列$x_k(k >= 2)$，数列单调递减且有下界，所以数列有极限。\newline
+		又有递推式\[x_{k+1} = \frac{1}{2}(x_k + \frac{7}{x_k})\]
+		两边取极限，得
+		\[x^{*} = \frac{1}{2}(x^{*} +\frac{7}{x^{*}})\]
+		解得$x^{*} = \sqrt{7}$，负值舍去。\newline\newline
+		\item[1.2]由题意有$\epsilon(x_k) \le \frac{1}{2} \times 10^{1-n}$要计算$\epsilon(x_{k+1})$\newline
+		\[\epsilon(x_{k+1}) = \frac{1}{2}\left|1 - \frac{7}{x_{k}^{2}}\right|\epsilon(x_k)\]
+		\[ \frac{1}{4}\left|1 - \frac{7}{x_{k}^{2}}\right|\epsilon(x_k) \le  \frac{1}{4}\left|1 - \frac{7}{x_{k}^{2}}\right| \times 10^{1-n}\]
+		\[ = \frac{1}{4}\left|\frac{\sqrt{7} + x_{k}}{x_k}\right| \left|\frac{\sqrt{7} - x_{k}}{x_k}\right| \times 10^{1-n}\]
+		\[ = \frac{1}{4}\left|\frac{\sqrt{7} + x_{k}}{x_k}\right| e_{r}(x_k) \times 10^{1-n}\]
+		\[\le \frac{1}{2} e_{r}(x_k)\times 10^{1-n}\]
+		\[\le \frac{1}{2} \times 10^{1-2n}\]
+		证毕\newline\newline
+		\item[2] 记$\sqrt{2} = x$，设所取值$1.4$与真实值的误差为，对各式求导并将$x = 1.4$代入
+		\[e_1 = ((x - 1)^6)^{'}e|_{x = 1.4} = 6(x - 1)^5e|_{x = 1.4} = 0.6144e\]
+		\[e_2 = 6(3 - 2x)^2e|_{x = 1.4} = 0.24e\]
+		\[e_3 = -70e\]
+		\[e_4 = -6(1 + x)^{-7}e|_{x = 1.4} = -0.0131e\]
+		\[e_5 = -6(3 + 2x)^{-6}e|_{x = 1.4} = -0.0053e\]
+		\[e_6 = -70(99 + 70x)^{-2}e|_{x = 1.4} = -0.0018e\]
+		所以可以看出使用最后一式计算误差最小\newline\newline
+		\item[3.1]$\frac{1}{1 - 2x}$与$\frac{1-x}{1 + x}$的值在$x\ll 1$时非常接近，但经过通分后得到
+		\[\frac{2x^{2}}{(1 + 2x)(1 + x)}\]
+		由此计算更为精确\newline\newline
+		\item[3.2]$\sqrt{x+\frac{1}{x}}$与$\sqrt{x- \frac{1}{x}}$在$x\gg 1$的情况下值相近，因此需要
+		\[\frac{\sqrt{x+\frac{1}{x}} - \sqrt{x- \frac{1}{x}}}{1}\]
+		\[= \frac{\frac{2}{x}}{\sqrt{x+\frac{1}{x}}+\sqrt{x- \frac{1}{x}}}\]
+		\[= \frac{2}{\sqrt{x^3 + x} + \sqrt{x^3 - x}}\]
+		这样可以避免大数加小数以及相近数相减。\newline\newline
+		\item[4.]法一：利用三角公式
+		\[f(x) = \frac{1 - \cos{x}}{x^2} = \frac{2\sin^2{\frac{x}{2}}}{x^2}\]
+		法二：利用$\cos{x}$在零点处的Taylor展开
+		\[f(x) = \frac{\frac{x^2}{2!} + \frac{x^4}{4!} + O(x^6)}{x^2}\]
+		\newline
+		\item[5.]利用递推公式计算通项公式得：\[Y_{n} = 28 - \frac{n}{100}\sqrt{783}\]
+		利用误差公式，记$x = \sqrt{783}, x^{*} = 27.982$，则有
+		\[e(Y_{100}) = e(x^{*})\]
+		所以误差小于等于$\epsilon(x^{*}) = \frac{1}{2} \times 10^{-3}$\newline
+		而对于递推式$Y_n = 2Y_{n - 1} - \frac{1}{100}\sqrt{783}$，通项公式为：
+		\[(28 - \frac{\sqrt{783}}{100})2^{n - 1} +\frac{\sqrt{783}}{100}\]
+		同样记$x = \sqrt{783}, x^{*} = 27.982$得到：
+		\[(28 - \frac{x}{100})2^{n - 1} +\frac{x}{100}\]
+		利用误差公式，求导得：
+		\[e(Y_{100}) = \frac{2^{n - 1} - 1}{100} e(x^{*})\]
+		令$n = 100$，则误差界为：
+		\[\epsilon(Y_{100}) = \frac{2^{99} - 1}{2} \times 10^{-5}\]\
+		这个误差非常大。\\ \\
+		\item[6.] 已知矩阵$A = A_1A_2A_3 \cdots A_n$，则可以利用结合律设计算法来减少乘法运算次数\\
+		下面做出一些规定：\\
+		$A[i] = A_i$，表示第$i$个矩阵\\$A[i](m)$表示第$i$个矩阵的行数\\$A[i](n)$表示第$i$个矩阵的列数\\
+		$P[i][j]$表示运算第$i$个到第$j$个矩阵乘法的计算次数。且$P[i][i] = 0$\\
+		$C[i][j]$为一集合，记录第$i$到$j$个矩阵的计算顺序\\
+		可以写出算法伪代码：\\
+		\begin{algorithm}
+			\KwIn{$A_1, A_2, A_3 \cdots, A_n$}
+			\KwOut{$A_{p_1},A_{p_2} \cdots, A_{p_n}$}
+			\For{$i = 0; i < n; i = i + 1$}{
+				$P[i][i] = 0$\\
+				$C[i][i] = A[i]$\\
+				\For{$j = i + 1; j < n; j = j + 1$}{
+					$P[i][j] = \infty$
+				}
+			}
+			\For{$i=1;i \le n;i = i + 1$}
+			{
+				\For{$j = 0; j < n - i; j = j+1$}
+				{
+					\For{$k = j; k < j + i; k = k + 1$}
+					{
+						$tmp = P[j][k] + A[j](m) * A[k](n) * A[j + i](n)$\\
+						\If{$tmp < P[j][j + i]$}{
+							$P[j][j + i] = tmp$\\
+							$C[j][j + i] = C[j][k] + C[k][j + i]$
+						} 
+					}
+				}
+			}
+			return $C[0][n - 1]$
+		\end{algorithm}
+		利用小区间最优向大区间转移。
+		\end{itemize}
+\end{document}

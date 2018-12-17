@@ -1,0 +1,220 @@
+\documentclass{article}
+\usepackage{ctex}
+\usepackage{geometry}
+\usepackage{amsfonts,amssymb, amsmath}
+\usepackage{listings} 
+\usepackage{fontspec}
+\usepackage{graphicx}
+\geometry{a4paper,left=2.5cm,right=2.5cm,top=2cm,bottom=2cm}
+\newcommand*{\dif}{\mathop{}\!\mathrm{d}}
+\renewcommand{\baselinestretch}{1.5}
+\title{科学计算作业9}	
+\author{张文涛 517030910425}
+\date{\today}
+\lstset{columns=flexible,numbers=left,numberstyle=\tiny,basicstyle=\small,keywordstyle=\color{blue!70},commentstyle=\color{red!50!green!50!blue!50}, rulesepcolor= \color{ red!20!green!20!blue!20} }
+\begin{document}
+	\maketitle
+	\begin{itemize}
+		\item[1.]定义函数$f:\mathbb{R} \rightarrow \mathbb{R}$如下：
+		$$f(x) = \ln(1+e^x)$$
+		证明：$f$在任何有限闭区间$[a,b]$上是压缩映像，但没有不动点。\\
+		\\
+		证：对于任何有限闭区间$[a,b]$，有：
+		$$\ln(1+e^b) - \ln(1+e^a) -(b -a) = \ln(1+\frac{1}{e^b}) - \ln(1+\frac{1}{e^a}) = \ln\left(\frac{e^{a+b}+e^a}{e^{a+b} + e^b}\right)<0$$
+		所以是压缩映像\\
+		假设原函数有不动点$x_{*}$，代入并两边取指数得到：
+		$$e^{x_*} = 1 + e^{x_*}$$
+		显然$x_*$不存在，因此没有不动点。\\
+		\\
+		\item[2.]设$f(x)\in C^{1}(\mathbb{R})$，满足$f(x_*) = 0.$设对于一切$x\in \mathbb{R},$满足$0<m\le f'(x)\le M$，证明：若参数$\lambda\in(0,2/M)$，则迭代法
+		$$x_{k+1} = x_{k} - \lambda f(x_k)$$
+		取任意初值$x_0\in \mathbb{R}$产生的序列收敛到$x_{*}.$\\
+		\\
+		证：
+		记$\phi(x) =  x - f(x)$，由题意有$\phi(x_*) = x_*$，即$x_*$为$\phi(x)$的不动点，对于$\mathbb{R}$上任意包含$x_*$的区间$[a, b]$，有：
+		$$\phi(a) - \phi(b) = \phi'(\xi)(b - a) \le \max\{1 - \lambda m, 1 - \lambda M\}(b - a)$$
+		$$|\phi(a) - \phi(b) |= |\phi'(\xi)||b - a| \le \max\{|1 - \lambda m|, |1 - \lambda M|\}|b - a|$$
+		由于$\lambda \in(0, 2/M)$，则可以验证$|1 - \lambda m|<1, |1 - \lambda M|<1$，因此对于$x_{k+1}\,, x_{k} \in [a, b]$，都有：
+		$$|x_{k+2} -  x_{k+1}| = |\phi(x_{k+1}) - \phi(x_k)| \le L|x_{k+1} - x_{k}|\qquad L = \max\{|1 - \lambda m|, |1 - \lambda M|\} \in(0,1)$$
+		所以对于任意的起始值$x_0$，可以进行一次迭代得到起始区间$[x_0, x_1]$，由于我们证明了对于任意$\mathbb{R}$上区间$\phi(x)$都是压缩映射，且由不动点的唯一性可以得知$x_k$收敛于$x_*$。\\
+		\\
+		\item[3.]设$a>0$，$n$为正整数，应用Newton法于方程$f(x) = x^{n} - a = 0$及$g(x) = 1 - a/x^n = 0$求正根.\\
+		(1)分别导出求解$\sqrt[n]{a}$的迭代表达式$x_{k+1} = \phi_{1}(x_k)$及$x_{k+1} = \phi_{2}(x_k).$\\
+		(2)分别计算$\lim\limits_{k \rightarrow \infty}(\sqrt[n]{a} - x_{k+1})/(\sqrt[n]{a} - x_{k})^2.$\\
+		(3)) 确定待定系数, 使得基于映射$\phi = c_1\phi_1 + c_2\phi_2 $导出的不动点方法产生的迭代序
+		列 ${x_k}$ 三阶收敛到$\sqrt[n]{a}$.\\
+		\\
+		(1)利用牛顿迭代法公式，有：
+		$$x_{k+1} = x_{k} - \frac{f(x_k)}{f'(x_k)} = x_k - \frac{x_{k}^n - a}{nx_k^{n - 1}} = \phi_{1}(x_k)$$
+		$$x_{k+1} = x_{k} - \frac{f(x_k)}{f'(x_k)} = x_k - \frac{x_{k}^{n+1} - ax_k}{na} = \phi_{2}(x_k)$$\\
+		\\
+		(2)由题意得：
+		$$\frac{\sqrt[n]{a} - x_{k+1}}{(\sqrt[n]{a} - x_{k})^2} = \frac{\phi_1(\sqrt[n]{a}) -\phi_{1}( x_{k})}{(\sqrt[n]{a} - x_{k})^2} =  \frac{\phi_{1}'(\sqrt[n]{a})(x_k  -\sqrt[n]{a}) + \frac{\phi_{1}''(\xi_1)(x_k  -\sqrt[n]{a})^2}{2!}}{(\sqrt[n]{a} - x_{k})^2} \qquad \xi_1 \in (x_k,\sqrt[n]{a})$$
+		则有：
+		$$
+			\lim\limits_{k \rightarrow \infty}\frac{\sqrt[n]{a} - x_{k+1}}{(\sqrt[n]{a} - x_{k})^2} =\frac{\phi_{1}''(\sqrt[n]{a})}{2} = - \frac{n - 1}{2\sqrt[n]{a}}
+		$$
+		对于$\phi_{2}$可以类似计算出：
+				$$
+		\lim\limits_{k \rightarrow \infty}\frac{\sqrt[n]{a} - x_{k+1}}{(\sqrt[n]{a} - x_{k})^2} =\frac{\phi_{2}''(\sqrt[n]{a})}{2} = -\frac{n+1}{2\sqrt[n]{a}}
+		$$\\
+		\\
+		(3)我们只需要调整系数消去二次项即可，$c_1$与$c_2$需要满足以下方程：
+		$$
+			\left\{
+				\begin{array}{lcl}
+				c_1 + c_2 = 1 \\
+				\phi_{1}''(\sqrt[n]{a})c_1 + \phi_{2}''(\sqrt[n]{a})c_2 = 0
+				\end{array}
+			\right.
+		$$
+		解得：
+			$$
+		\left\{
+		\begin{array}{lcl}
+		c_1 = \frac{n - 1}{2}\\
+		c_2 = \frac{3 - n}{2}
+		\end{array}
+		\right.
+		$$
+		所以$\phi =\frac{n - 1}{2}\phi_1 + \frac{3 - n}{2}\phi_2$\\\\
+		\item[4.]设 $a > 0 $, $n$ 为正整数, 给定迭代法
+		$$
+		x_{k+1} = \frac{x_k(x_k^2 + 3a)}{3x_k^2 + a}
+		$$
+		证明：\\
+		(1)迭代法是计算$\sqrt{a}$的三阶方法\\
+		(2) 假定初值$x_0$充分靠近$x_*,$计算$\lim\limits_{k\rightarrow \infty}(\sqrt{a} - x_{k+1})/(\sqrt{a} - x_k)^3.$ \\
+		\\
+		(1)记$\phi(x) = \frac{x(x^2 + 3a)}{3x^2 + a}$，求其三阶导数：
+		$$\phi'(x) = 3\left(\frac{x^2 - a}{3x^2 + a}\right)^2$$
+		$$\phi''(x) = \frac{48ax(x^2 - a)}{(3x^2 + a)^3}$$
+		$$\phi'''(x) = \frac{48(9ax^4 - a^3 - 18x^4 + 18a^2x^2)}{(3x^2 + a)^4}$$
+		可以验证$\phi'(\sqrt{a}) = 0\,,\phi''(\sqrt{a}) = 0\,,\phi'''(\sqrt{a}) = \frac{3}{2a}$
+		由此可以看出这是计算$\sqrt(a)$的三阶方法。\\\\
+		(2)由题意得：
+		$$\frac{\sqrt{a} - x_{k+1}}{(\sqrt{a} - x_k)^3} = \frac{\phi(\sqrt{a}) -\phi(x_{k})}{(\sqrt{a} - x_k)^3}= \frac{\phi'''(\xi)}{3!} \qquad \xi \in (x_k,\sqrt{a}) $$
+		$$\lim\limits_{k \rightarrow \infty}\frac{\sqrt{a} - x_{k+1}}{(\sqrt{a} - x_{k})^3} = \frac{\phi'''(\sqrt{a})}{3!} = \frac{1}{4a}$$\\
+		\item[5.]考虑方程 $3x^2 − e^x = 0. $给定容许误差 $\epsilon = 10^{−6}$\\
+		(1) 分析方程根的分布情况.\\
+		(2) 对于每个根，构造不动点算法求根，利用 MATLAB 编程求解，记录迭代次数并观
+		察给定不同初值的结果.\\
+		(3) 对于每个根，构造 Newton 法求根，利用 MATLAB 编程求解，记录迭代次数并观
+		察给定不同初值的结果.\\\\
+		
+		(1)利用MATLAB编程，分析解所在的大致区域：
+		\begin{lstlisting}
+			function analyze()
+			x  = -10:0.01:10;
+			res = 3*x.^2 - exp(x);
+				for i = 1:length(res) - 1
+					if res(i) * res(i+1) < 0
+						fprintf("(%.2f, %.2f)\n",x(i), x(i + 1));
+					end
+				end
+			end
+		\end{lstlisting}
+		得到$(-0.46, -0.45)\,,(0.91, 0.92)\,,(3.73, 3.74)$，确定解所在的大致区间。\\
+		\\
+		(2)根据题意可以构造\\
+		对于在$(-0.46, -0.45)$的根，构造得到函数：
+		$$\phi_1(x) = \frac{3x^2 - e^x + 2x}{2} = x$$
+		求导数得到：
+		$$\phi_1'(x) = \frac{6x - e^x +2}{2} \le \phi_{1}'(-0.45) = L_1$$
+		编写MATLAB程序：
+		\begin{lstlisting}
+			function root1(st)
+			eps = 1e-6;
+			cnt = 0;
+			xk1 = 0;
+			xk = st;
+			L =  (6*(-0.45)-exp(-0.45)+ 2)/2;
+			while(1)
+				cnt = cnt + 1;
+				xk1 = (3 * xk.^2 - exp(xk) +2*xk)/2;
+				if(abs(xk1 - xk)/(1 - L) <= eps)
+					break;
+				end
+				xk = xk1;
+			end
+			fprintf("result is %.7f, iterate %d times\n", xk, cnt);
+			end
+		\end{lstlisting}
+		输入-0.45可以得到结果：result is -0.4589632, iterate 26 times.并且离精确解越近，迭代次数越少。\\\\
+		
+		对于在$(0.91, 0.92)$的根，构造得到函数：
+		$$\frac{e^x}{3x} = x$$
+		求导可以得到Lipschitz系数：
+		$$|\phi_{2}'(x)| =\left| e^{x}\left(\frac{x- 1}{3x^2}\right)\right| \le |\phi_{2}'(0.91)| = L_2$$
+		则可以利用此结果编写MATLAB程序：
+		\begin{lstlisting}
+			function root2(st)
+			eps = 1e-6;
+			cnt = 0;
+			xk1 = 0;
+			xk = st;
+			L =  exp(0.91).*(0.91 - 1) / (3*0.91.^2);
+			while(1)
+				cnt = cnt + 1;
+				xk1 = exp(xk)./(3.*xk);
+				if(abs(xk1 - xk)/(1 - L) <= eps)
+					break;
+				end
+				xk = xk1;
+			end
+			fprintf("result is %.7f, iterate %d times\n", xk, cnt);
+			end
+		\end{lstlisting}
+		得到结果：result is 0.9100082, iterate 5 times，改变起始节点的效果与$(1)$类似。\\\\
+
+		对于在$(3.73, 3.74)$的根，构造得到函数：
+		$$\frac{3x^3}{e^x} = x$$
+		求导可以得到Lipschitz系数：
+		$$|\phi_{3}'(x)| =\left|\frac{9x^2 - 3x^3}{e^{2x}}\right| \le |\phi_{3}'(3.74)| = L_2$$
+		则可以利用此结果编写MATLAB程序：
+		\begin{lstlisting}
+		function root3(st)
+		eps = 1e-6;
+		cnt = 0;
+		xk1 = 0;
+		xk = st;
+		L =  (9*3.74^2 - 3*3.74^3) / exp(3.74);
+		while(1)
+			cnt = cnt + 1;
+			xk1 = 3*xk.^3./exp(xk);
+			if(abs(xk1 - xk)/(1 - L) <= eps)
+				break;
+			end
+			xk = xk1;
+		end
+		fprintf("result is %.7f, iterate %d times\n", xk, cnt);
+		end
+		\end{lstlisting}
+		输入3.73，得到结果：result is 3.7330781, iterate 27 times，改变起始节点的效果与$(1)$类似。\\\\
+		(2)计算牛顿公式得到：
+		$$x_{k+1} = x_k - \frac{3x_k^2 - e^x_k}{6x_k - e^x_k}$$
+		编写MATLAB程序：
+		\begin{lstlisting}
+			function Newton(st)
+			eps = 1e-6;
+			cnt = 0;
+			xk1 = 0;
+			xk = st;
+			while(1)
+				cnt = cnt + 1;
+				xk1 = xk - (3*xk.^2 - exp(xk))./(6.*xk - exp(xk));
+				if(abs(xk1 - xk)/(xk) < eps)
+					break;
+				end
+				xk = xk1;
+			end
+			fprintf("result is %.7f, iterate %d times\n", xk, cnt);
+			end
+		\end{lstlisting}
+		分别输入$-1,\, 1,\, 3$，得到：\\
+		result is -0.4589623, iterate 5 times\\
+		result is 0.9100076, iterate 4 times\\
+		result is 3.7330791, iterate 9 times\\
+		速度远好于不动点迭代法。
+	\end{itemize}
+\end{document}

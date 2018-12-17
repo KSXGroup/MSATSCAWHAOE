@@ -1,0 +1,191 @@
+\documentclass{article}
+\usepackage{ctex}
+\usepackage{geometry}
+\usepackage{amsfonts,amssymb}
+\usepackage{listings} 
+\usepackage{fontspec}
+\usepackage{graphicx}
+\geometry{a4paper,left=2.5cm,right=2.5cm,top=2cm,bottom=2cm}
+\renewcommand{\baselinestretch}{1.5}
+\title{科学计算作业4}	
+\author{张文涛 517030910425}
+\date{\today}
+\lstset{columns=flexible,numbers=left,numberstyle=\tiny,basicstyle=\small,keywordstyle=\color{blue!70},commentstyle=\color{red!50!green!50!blue!50}, rulesepcolor= \color{ red!20!green!20!blue!20} }
+\begin{document}
+	\maketitle
+	\begin{itemize}
+		\item[1.]证明
+		$$(1)\Delta(f_{k}g_{k}) = f_{k}\Delta g_{k} + g_{k+1}\Delta f_{k}$$，
+		$$(2)\sum\limits_{k = 0}^{n-1}f_{k}\Delta g_{k} = f_{n}g_{n} - f_{0}g_{0} - \sum\limits_{k = 0}^{n-1}g_{k+1}\Delta f_{k}$$\\\\
+		证(1)：由定义可知$\Delta = E - I$，则：
+		$$\Delta(f_{k}g_{k}) = f_{k+1}g_{k+1} - f_{k}g_{k}$$
+		$$ f_{k}\Delta g_{k} + g_{k+1}\Delta f_{k} = f_{k}(g_{k+1} - g_{k}) +g_{k+1}(f_{k+1} - f_{k}) = f_{k+1}g_{k+1} - f_{k}g_{k}$$\\
+		证毕。\\\\
+		证(2)：同样利用定义计算：
+		$$\sum\limits_{k = 0}^{n-1}f_{k}\Delta g_{k} = \sum\limits_{k = 0}^{n-1}f_{k}(g_{k+1} - g_{k}) = \sum\limits_{k = 0}^{n-1}f_{k}g_{k+1} - \sum\limits_{k = 0}^{n-1}f_{k}g_{k}$$
+		$$ f_{n}g_{n} - f_{0}g_{0} - \sum\limits_{k = 0}^{n-1}g_{k+1}\Delta f_{k} = f_{n}g_{n} - f_{0}g_{0} - \sum\limits_{k = 0}^{n-1}g_{k+1}f_{k+1} + \sum\limits_{k = 0}^{n-1}g_{k+1}f_{k} = - \sum\limits_{k = 0}^{n-1}f_{k}g_{k} + \sum\limits_{k = 0}^{n-1}f_{k}g_{k+1} $$\\
+		证毕。\\\\
+		\item[2.]利用差分算子，计算：
+		$$S_{n}=\sum_{k=1}^{n}k^{3}$$
+		容易知道：
+		$$S_{n} = \sum_{k=1}^{n}k^{3} = \sum_{k=0}^{n}k^{3}$$
+		且由定义知$\Delta = E - I$，则$E = \Delta + I$，利用二项式定理展开：
+		$$E^n = (\Delta + I)^{n} = \sum_{k = 0}^{n}C_{n}^{k}I^{n-k}\Delta^{k}$$
+		将算子作用于$S_{k}$，得到：
+		$$S_{n+k} = \sum_{k = 0}^{n}C_{n}^{k}I^{n-k}\Delta^{k}S_{k} = \sum_{k = 0}^{n}C_{n}^{k}\Delta^{k}S_{k}$$
+		$$S_{k} = \sum_{k=1}^{n}k^{3}$$
+		$$\Delta S_{k} = (k+1)^{3}$$
+		$$\Delta^{2} S_{k} = 3k^{2} + 9k + 7$$
+		$$\Delta^{3} S_{k} = 6k + 12$$
+		$$\Delta^{4} S_{k} = 6$$
+		此时令$k = 0$，则得到：
+		$$S_{n} = C_{n}^{0}\times0 + C_{n}{1}\times1 +C_{n}^{2}\times7 + C_{n}^{3}\times12 + C_{n}^{4}\times6$$
+		$$S_{n} = n + \frac{7n(n-1)}{2!} + \frac{12n(n-1)(n-2)}{3!} + \frac{6n(n-1)(n-2)(n-3)}{4!}$$
+		$$S_{n} = n\frac{12 + 42(n-1) + 24(n-1)(n-2) + 3(n-1)(n-2)(n-3)}{12}$$
+		$$S_{n} = \frac{n^{2}(3n^2 - 6n + 3)}{12} = \frac{n^{2}(n-1)^2}{4}$$\\
+		\item[3.]求多项式$p(x)\in\mathbb{P}_{4}$，满足：
+		$$p(x_{0})=f(x_{0}), p'(x_{0}) = f'(x_{0}), p''(x_{0}) = f''(x_{0}),$$
+		$$p'''(x_{0}) = f'''(x_{0}), p(x_{1}) = f(x_{1}).$$\\
+		利用基函数方法求解：
+		\\规定$f(x_{0}),f'(x_{0}), f''(x_{0}), f'''(x_{0}), f_(x_{1})$的插值基函数分别为
+		$$\alpha_{1}(x), \alpha_{2}(x), \alpha_{3}(x), \alpha_{4}(x), \alpha_{5}(x) \in \mathbb{P}_{4}$$
+		对于$\alpha_{1}(x)$，其需要满足得条件有：
+		$$\left\{
+		\begin{array}{lcl}
+			\alpha_{1}(x_{0}) = 1 && \alpha_{1}(x_{1}) = 0;\\
+			\alpha_{1}'(x_{0}) = 0 \\
+		    \alpha_{1}''(x_{0}) = 0\\
+		    \alpha_{1}'''(x_{0}) = 0\\
+		\end{array}
+		\right.$$
+		可以利用$\alpha_{1}(x)$在$x_{0}$的Taylor展开：
+		$$\alpha_{1}(x) = \alpha_{1}(x_{0}) + \alpha_{1}'(x_{0})(x - x_{0}) + \frac{\alpha_{1}''(x_{0})}{2!}(x- x_{0})^{2} + \frac{\alpha_{1}'''(x_{0})}{3!}(x- x_{0})^{3} + \frac{\alpha_{1}''''(x_{0})}{4!}(x- x_{0})^{4}$$
+		代入得：
+		$$\alpha_{1}(x) = 1 + \frac{\alpha_{1}''''(x_{0})}{4!}(x- x_{0})^{4}$$
+		再利用条件$\alpha_{1}(x_{1}) = 0$可求得：
+		$$\frac{\alpha_{1}''''(x_{0})}{4!} = -\frac{1}{(x_{1}-x_{0})^{4}}$$
+		所以求得：
+		$$\alpha_{1}(x) = 1 -\frac{(x - x_{0})^{4}}{(x_{1} - x_{0})^{4}} $$
+		利用类似的方式，可以求得：
+		$$\left\{
+		\begin{array}{lcl}
+		\alpha_{1}(x) =  1 -\frac{(x - x_{0})^{4}}{(x_{1} - x_{0})^{4}}\\
+		\alpha_{2}(x) = (x - x_{0})-\frac{(x - x_{0})^{4}}{(x_{1} - x_{0})^{3}}\\
+		\alpha_{3}(x) = \frac{(x - x_{0})^2}{2} - \frac{(x - x_{0})^{4}}{2(x_{1} - x_{0})^{2}}\\
+		\alpha_{4}(x) = \frac{(x - x_{0})^{3}}{6} - \frac{(x - x_{0})^{4}}{6(x_1 - x_{0})}\\
+		\alpha_{5}(x) = \frac{(x - x_{0})^{4}}{(x_{1} - x_{0})^{4}}\\
+		\end{array}\right.$$
+		所以可得多项式为：
+		$$p(x) = \left[ 1 -\frac{(x - x_{0})^{4}}{(x_{1} - x_{0})^{4}}\right]f(x_{0}) + \left[ (x - x_{0})-\frac{(x - x_{0})^{4}}{(x_{1} - x_{0})^{3}}\right]f'(x_{0}) + \left[\frac{(x - x_{0})^2}{2} - \frac{(x - x_{0})^{4}}{2(x_{1} - x_{0})^{2}}\right]f''(x_{0}) $$
+		$$ + \left[\frac{(x - x_{0})^{3}}{6} - \frac{(x - x_{0})^{4}}{6(x_1 - x_{0})}\right]f'''(x_{0}) + \left[\frac{(x - x_{0})^{4}}{(x_{1} - x_{0})^{4}}\right]f(x_{1})$$
+		设原函数可以表示为：
+		$$f(x) = p(x) + K(x)(x - x_{0})^{4}(x - x_{1})$$
+		构造函数$\phi(t)$，其中$K(x)$为待定函数：
+		$$\phi(t) = f(t) - p(t) - K(x)(t-x_{0})^{4}(t - x_{1})$$
+		计入重根，则$\phi(t)$有6个根，反复使用Rolle中值定理，则$[x_{0}, x_{1}]$间存在$\xi$，使得：
+		$$\phi^{(5)}(\xi) = f^{(5)}(\xi) - K(x)5! = 0$$
+		由此推出：
+		$$K(x) = \frac{ f^{(5)}(\xi)}{5!}$$
+		所以余项为：
+		$$R_{n}(x) =  \frac{ f^{(5)}(\xi)}{5!}(x - x_{0})^{4}(x - x_{1}) $$\\
+		\item[4.]设$\alpha_{k}, \alpha_{k + 1}, \beta_{k}, \beta_{k+1}$是在$e_{k} = [x_{k}, x_{k+1}]$上的3次Hermite插值基函数，求证：\\
+		(1)$\alpha_{k}, \alpha_{k + 1}$均是非负函数，且$\alpha_{k} + \alpha_{k + 1} = 1$;\\
+		(2)$\left|\beta_{k}(x)\right|,\left|\beta_{k + 1}(x)\right| \le \frac{4}{27}h_{k}$，其中$h_{k} = x_{k+1} - x_{k}$;\\
+		(3)设$f\in C^{1}[x_{k}, x_{k+1}]$，根据$(1)$和$(2)$的结果，求证$||f - H_{3}||_{\infty} \le \frac{35}{27}||f'||_{\infty}h_{k}$\\\\
+		(1)由题意可设
+		$$\alpha_{k}(x) = (Ax + B)(x - x_{k+1})^{2}$$
+		并且由$\alpha_{k}(x_{k}) = 1, \alpha_{k}'(x_{k}) = 0$，计算得：
+		$$\alpha_{k}(x) = \left(\frac{x_{k+1} - 3x_{k} + 2x}{x_{k+1} - x_{k}}\right)\left(\frac{x - x_{k+1}}{x_{k} - x_{k+1}}\right)^{2}$$
+		并可以用类似方法计算得$\alpha_{k+1}(x),\beta_{k}(x), \beta_{k+1}(x)$，得到：
+		$$\left\{
+		\begin{array}{lcl}
+		\alpha_{k+1}(x) = \left(\frac{x_{k} - 3x_{k + 1} + 2x}{x_{k} - x_{k + 1}}\right)\left(\frac{x - x_{k}}{x_{k + 1} - x_{k}}\right)^{2}\\
+		\beta_{k}(x) = (x - x_{k})\left(\frac{x-x_{k+1}}{x_{k} - x_{k+1}}\right)^{2}\\
+		\beta_{k+1}(x) = (x - x_{k + 1})\left(\frac{x-x_{k}}{x_{k+1} - x_{k}}\right)^{2}\\
+		\end{array}\right.$$
+		对于$\alpha_{k},\left(\frac{x - x_{k+1}}{x_{k} - x_{k+1}}\right)^{2} \ge 0$，只需证$\frac{x_{k} - 3x_{k + 1} + 2x}{x_{k} - x_{k + 1}} \ge 0$\\
+		$\frac{x_{k} - 3x_{k + 1} + 2x}{x_{k} - x_{k + 1}}$是单调递减函数，只需将$x = x_{2}$代入，即得证。$\alpha_{k+1}(x) \ge 0$同理。\\
+		而后计算$\alpha_{k}(x) +\alpha_{k + 1}(x)$：
+		$$\alpha_{k}(x) +\alpha_{k + 1}(x) = \frac{(x_{k+1} - 3x_{k} +2x)(x - x_{k+1})^{2} - (x_{k} - 3x_{k+1}+ 2x)(x -x_{k})^{2}}{(x_{k+1} - x_{k})^{3}}$$
+		$$ = \frac{x_{k+1}^{3} - 3x_{k}x_{k+1}^2 + 3x_{k+1}x_{k}^{2} - x_{k}^{3}}{(x_{k+1} - x_{k})^{3}} = 1$$
+		得证。\\
+		(2)已经求得：
+		$$\beta_{k}(x) =  (x - x_{k})\left(\frac{x-x_{k+1}}{x_{k} - x_{k+1}}\right)^{2}$$
+		则可以求导得到极值点：
+		$$\beta_{k}'(x) = 3x^{2} - 2x(2x_{k+1} + x_{k}) + x_{k+1}(x_{k+1} + 2x_{k}) = 0$$
+		求解得两个解$x_{1} = x_{k+1}$（舍去），$x_{2} = \frac{x_{k+1} + 2x_{k}}{3}$，将其代入得到：
+		$$\left(\frac{x_{k+1} - x_{k}}{3}\right)\left(\frac{2x_{k} - 2x_{k+1}}{x_{k+1} - x_{k}}\right)^{2} = \frac{4}{27}h_{k}$$
+		$\beta_{k+1}(x)$同理可解。\\
+		由此得证，$\left|\beta_{k}(x)\right|,\left|\beta_{k + 1}(x)\right| \le \frac{4}{27}h_{k}$。\\
+		(3)由题可知：
+		$$|f - H_{3}|=|\alpha_{k}(x)f(x_{k}) + \alpha_{k+1}(x)f(x_{k+1}) + \beta_{k}(x)f'(x_{k}) + \beta_{k+1}(x)f'(x_{k+1}) - f(x)|$$
+		缩放得：
+		$$\le |\alpha_{k}(x)f(x_{k}) + \alpha_{k+1}(x)f(x_{k+1}) - f(x)| + ||f'||_{\infty}\frac{4}{27}h_{k}$$
+		利用之前结论做一些变换：
+		$$=|\alpha_{k}(x)f(x_{k}) + \alpha_{k+1}(x)f(x_{k+1}) - \alpha_{k}(x)f(x) -  \alpha_{k+1}(x)f(x)| + ||f'||_{\infty}\frac{8}{27}h_{k}$$
+		$$=|\alpha_{k}(x)(f(x_{k}) - f(x)) + \alpha_{k+1}(x)(f(x_{k+1}) - f(x))|  + ||f'||_{\infty}\frac{8}{27}h_{k}$$
+		对$f(x)$分别在$x_{k},x_{k+1}$处进行一阶Taylor展开，其中$\xi_{1}\in[x_{k}, x], \xi_{2} \in [x, x_{k+1}]$：
+		$$|\alpha_{k}(x)f'(\xi_{1}) (x - x_{k})+ \alpha_{k+1}(x)f'(\xi_{2})(x- x_{k+1})|  + ||f'||_{\infty}\frac{8}{27}h_{k}$$
+		进一步缩放：
+		$$\le |\alpha_{k}(x)f'(\xi_{1}) (x - x_{k}) |+ |\alpha_{k+1}(x)f'(\xi_{2})(x- x_{k+1})|  + ||f'||_{\infty}\frac{8}{27}h_{k}$$
+		$$\le |\alpha_{k}(x)f'(\xi_{1})|h_{k}+ |\alpha_{k+1}(x)f'(\xi_{2})|h_{k}  + ||f'||_{\infty}\frac{8}{27}h_{k}$$
+		由于$\alpha_{k}, \alpha_{k + 1}$均是非负函数：
+		$$\le \alpha_{k}(x)||f'||_{\infty}h_{k}+ \alpha_{k+1}(x)||f'||_{\infty}h_{k}  + ||f'||_{\infty}\frac{8}{27}h_{k}$$
+		$$=\frac{35}{27}||f'||_{\infty}h_{k}$$
+		证毕。\\
+		\item[5.]利用MALAB编程完成以下数值实验：\\
+		(1)给定$f(x) = sinh(x), f(0) = 0, f(0.20) = 0.2013360, f(0.30) = 0.3045203,
+		f(0.50) = 0.5210953$，试求Newton插值多项式$N_{3}(x)$，并利用插值多项式计算$f(0.23)$的近似值，并利用MATLAB自带函数所求结果计算截断误差\\
+		(2)给定$f(x) = e^{0.1x^{2}}, f(1) = 1.105170918, f′(1) = 0.2210341836, f(1.5) = 1.252322716,f′(1.5) = 0.3756968148$，试求Hermite插值多项式$H_{3}(x)$，并利用插值多项式计算$f(1.25)$的近似值，并利用MATLAB自带函数所求结果计算截断误差.\\\\
+		(1)编写MATLAB的Newton插值函数：\\
+		\begin{lstlisting}[language = MATLAB]
+		%x,y为已知插值节点的信息，p为需要求解的点
+		function res = newton1(x, y, p)
+		lenx = length(x);
+		leny = length(y);
+		if lenx ~= leny , error('len(x) != len(y)'); end;
+		c = zeros(lenx, lenx);
+		c(:,1) = y';
+		for i = 2:lenx
+			for j = i: lenx
+				c(j, i) = (c(j, i - 1) - c(j - 1, i - 1))./(x(j) - x(j - i + 1));
+			end
+		end
+		res = 0;
+		for k = 1 :lenx
+			tmp = 1;
+			for u = 1:k-1
+				tmp = tmp .* (p - x(u));
+			end
+			res = res + tmp.* c(k, k);
+		end
+		\end{lstlisting}
+		输入
+		$$x = [0, 0.2, 0.3, 0.5]$$
+		及
+		$$y = [0, 0.2013360, 0.3045203, 0.5210953]$$
+		调用插值函数得到结果$f(0.23) = 0.232031850820000$，再利用MATLAB自带$sinh(x)$，计算得到截断误差为$1.352893071904226 \times 10^{-6}$，插值结果较为理想。\\\\
+		(2)这是一个典型的两点三次Hermite插值，之前我们已经计算得到：
+		$$\left\{
+			\begin{array}{lcl}
+			\alpha_{k}(x) = \left(\frac{x_{k+1} - 3x_{k} + 2x}{x_{k+1} - x_{k}}\right)\left(\frac{x - x_{k+1}}{x_{k} - x_{k+1}}\right)^{2}\\
+			\alpha_{k+1}(x) = \left(\frac{x_{k} - 3x_{k + 1} + 2x}{x_{k} - x_{k + 1}}\right)\left(\frac{x - x_{k}}{x_{k + 1} - x_{k}}\right)^{2}\\
+			\beta_{k}(x) = (x - x_{k})\left(\frac{x-x_{k+1}}{x_{k} - x_{k+1}}\right)^{2}\\
+			\beta_{k+1}(x) = (x - x_{k + 1})\left(\frac{x-x_{k}}{x_{k+1} - x_{k}}\right)^{2}\\
+			\end{array}
+		\right.$$
+		则利用结果编写MATLAB程序：
+		\begin{lstlisting}[language = MATLAB]
+		function res = hermite(x, y, y1, p)
+		A = (1 + 2.*(p - x(1))./ (x(2) - x(1))).*(((p - x(2))./(x(1) - x(2))).^2);
+		B = (1 + 2.*(p - x(2))./ (x(1) - x(2))).*(((p - x(1))./(x(2) - x(1))).^2);
+		C = (p - x(1)).*(((p - x(2)) ./ (x(1) - x(2))).^2);
+		D = (p - x(2)).*(((p - x(1)) ./ (x(2) - x(1))).^2);
+		res =  A.*y(1) + B .*y(2) + C.*y1(1) + D.*y1(2);
+		end
+		\end{lstlisting}
+		计算插值结果得到$H_{3}(1.25) = 1.169080402550000$\\
+		利用MATLAB自带函数计算截断误差得到$3.804361950443536\times10^{-5}$\\
+		\item[5.]思考许久，无力解答。
+	\end{itemize}
+\end{document}

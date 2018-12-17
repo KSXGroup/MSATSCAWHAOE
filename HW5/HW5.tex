@@ -1,0 +1,225 @@
+\documentclass{article}
+\usepackage{ctex}
+\usepackage{geometry}
+\usepackage{amsfonts,amssymb}
+\usepackage{listings} 
+\usepackage{fontspec}
+\usepackage{graphicx}
+\geometry{a4paper,left=2.5cm,right=2.5cm,top=2cm,bottom=2cm}
+\renewcommand{\baselinestretch}{1.5}
+\title{科学计算作业5}	
+\author{张文涛 517030910425}
+\date{\today}
+\lstset{columns=flexible,numbers=left,numberstyle=\tiny,basicstyle=\small,keywordstyle=\color{blue!70},commentstyle=\color{red!50!green!50!blue!50}, rulesepcolor= \color{ red!20!green!20!blue!20} }
+\begin{document}
+	\maketitle
+	\begin{itemize}
+		\item[1.]对权函数$\rho(x) = 1 + x^{2}$，区间$[-1,1]$，试求首项系数为$1$的正交多项式$\phi_{n}(x)$，$n = 0,1,2,3$\\
+		利用正交化过程求解。令$\phi_{0} = 1$，利用正交化过程，有：
+		$$
+			\phi_{1} =x - \frac{\int_{-1}^{1} (1 + x^2)x\,dx}{\int_{-1}^{1}1+x^2\,dx} = x
+		$$
+		$$
+			\phi_{2} =x^2 - \frac{\int_{-1}^{1} (1 + x^2)x^2\,dx}{\int_{-1}^{1}1+x^2\,dx}  - \frac{\int_{-1}^{1} (1 + x^2)x^3\,dx}{\int_{-1}^{1}x^{2}(1+x^2)}x\,dx= x^2 - \frac{2}{5}
+		$$
+		$$
+			\phi_{3} =x^3 - \frac{\int_{-1}^{1} (1 + x^2)x^3\,dx}{\int_{-1}^{1}1+x^2\,dx}  - \frac{\int_{-1}^{1} (1 + x^2)x^4\,dx}{\int_{-1}^{1}x^{2}(1+x^2)\,dx}x -\frac{\int_{-1}^{1}(1+x^2)(x^2-\frac{2}{5})x^{3}\,dx}{\int_{-1}^{1}(1+x^2)(x^2 - \frac{2}{5})^{2}\,dx}(x^2 - \frac{2}{5}) = x^3 - \frac{9}{14}x
+		$$
+		所以得到：
+		$$
+		\left\{
+			\begin{array}{lcl}
+				\phi_{0} = 1, \\
+				\phi_{1} =x,\\
+				\phi_{2} =x^2 -  \frac{2}{5}\\
+				\phi_{3} =  x^3 - \frac{9}{14}x\\
+			\end{array}
+		\right.
+		$$\\
+		\item[2.]令$s_{n} = \frac{1}{n+1}T_{n+1}'(x), n \ge 0$.$s_{n}$称为第二类Chbeyshev多项式，试求出$s_{n}$的表达式并证明${s_{n}}$是$[-1,1]$上带权函数$\rho(x) = \sqrt{1-x^{2}}$的正交多项式序列.\\
+		$$
+		\frac{T_{n+1}'(x)}{n+1} = \int_{-1}^{1}\frac{\sin[(n+1)\arccos x]}{\sqrt{1-x^2}}\, dx
+		$$
+		任取$p, q \in [-1, 1]$，
+		$$
+			\int_{-1}^{1}\rho(x)s_{p}(x)s_{q}\,dx = \frac{\sin[(p+1)\arccos x] \sin[(q+1)\arccos x]}{\sqrt{1-x^2}}
+		$$
+		令$t = \arccos x$，作变量代换，改变积分上下限：
+		$$
+				\int_{-1}^{1}\rho(x)s_{p}(x)s_{q}\,dx =\int_{2\pi}^{0} -\sin[(p+1)t] \sin[(q+1)t]\,dt
+		$$
+		则有：
+		$$
+		\int_{-1}^{1}\rho(x)s_{p}(x)s_{q}(x)\,dx = \left\{
+			\begin{array}{lcl}
+			0 && p\ne q,\\
+			\pi && p = q
+			\end{array}
+		\right.$$
+		所以${s_{n}}$是$[-1,1]$上带权函数$\rho(x) = \sqrt{1-x^{2}}$的正交多项式序列.\\\\
+		\item[3.]设$n$为非负整数，$T_{n}(x)$为Chebyshev多项式，计算
+		$$
+			\int_{-1}^{1} \frac{[T_{n}(x)]^2}{\sqrt{1 - x^2}}dx
+		$$
+		由题意可知：
+		$$
+		\int_{-1}^{1} \frac{[T_{n}(x)]^2}{\sqrt{1 - x^2}}dx = \int_{-1}^{1}\frac{\cos^2(n \arccos(x))}{\sqrt{1 - x^2}}dx 
+		$$
+		令$t = \arccos x$，作变量代换，改变积分上下限：
+		$$
+		\int_{-1}^{1} \frac{[T_{n}(x)]^2}{\sqrt{1 - x^2}}dx = \int_{0}^{2\pi}\cos^2(nt)dt = \int_{0}^{2\pi}\frac{\cos(2nt) + 1}{2}
+		$$
+		得到结果：
+		$$
+		\int_{-1}^{1} \frac{[T_{n}(x)]^2}{\sqrt{1 - x^2}}dx = \left\{
+		\begin{array}{lcl}
+		\pi && n \ne 0,\\
+		2\pi && n = 0
+		\end{array}
+		\right.
+		$$\\\\
+		\item[4.]设$x_{0}, x_{1}, \cdots, x_{n}$为区间 $[a, b]$上相异节点，$ω_{n+1}(x) = \prod_{i = 0}^{n}(x − x_{i})$, 证明:
+
+		$$\max\limits_{x_{0}\le x \le x_{n}}|\omega_{n+1}(x)|\le\frac{1}{4}h^{n+1}n!$$
+		式中$h = \max\limits_{0 \le i \le n+1}(x_{i+1} - x_{i})$\\\\
+		假设$h = x_{k+1} - x_{k}$，则由基本不等式有当$x = \frac{x_{k+1} + x_{k}}{2}$时：
+		$$|(x - x_{k})(x - x_{k+1})| \le  \frac{1}{4}h^{2}$$
+		另外有，当某个确定的$x = a, a\in[x_{i}, x_{i+1}]$，此时这个不等式有上限：
+		$$\max\limits_{x_{0}\le x \le x_{n}}|\omega_{n+1}(x)| \le |(a - x_{i})(a - x_{i+1})|h^{n - 1}p!q!$$
+		其中$p + q = n + 1, p > 0, q > 0$，$p, q$为整数\\
+		同时考虑两个限制，可以发现当$k = 0$或$k = n-1$且$x = \frac{x_{k+1} + x_{k}}{2}$有最大值上限估计：
+		$$\max\limits_{x_{0}\le x \le x_{n}}|\omega_{n+1}(x)| \le \frac{1}{4}h^{n+1}n!$$\\\\
+		\item[5.]设$L_{n}$为$n$次Legendre多项式，试证明:
+		$$
+		(1-x^{2})L_{n}'(x) +nxL_{n}(x) = nL_{n-1}(x).
+		$$\\
+		利用数学归纳法证明，假设当$\forall n, n \le k-1$时等式成立，则$n = k$时也成立，首先验证$k = 1, k = 2,k= 3$的情况：
+		$$k = 1 \Rightarrow (1-x^2)+ x^2 = 1$$
+		$$k = 2 \Rightarrow (1-x^2)3x + x(3x^2 - 1) = 2x$$
+		$$k = 3 \Rightarrow (1-x^2)(15x^2-3) + 3x(5x^3 - 3x) = 9x^2 - 1$$
+		显然$k=1,k=2, k = 3$均成立，则假设$n \le k - 1(k > 3)$时成立，则可以利用已知的递推式以及归纳假设：
+		$$nL_{k}(x) = (2k - 1)xL_{k-1}(x) - (k - 1)L_{k-2}(x)$$
+		两边对$x$求导，得到：
+		$$kL_{k}'(x) = (2k-1)L_{k-1}(x) + (2k-1)xL_{k-1}'(x) - (k-1)L_{k-2}'(x)$$
+		利用归纳假设替换$L_{k - 1}'(x), L_{k-2}'(x)$，得到：
+		$$kL_{k}'(x)(1-x^2) = (2k-1)(1-kx^2)L_{k-1}(x)+3x(k-1)^2L_{k-2}(x) - (k-1)(k-2)L_{k-3}(x)$$
+		利用递推公式替换$L_{k-2}(x)$，化简得到：
+		$$kL_{k}'(x)(1-x^2) = (4k^2x^2-8kx^2+3x^2+2k - 1)L_{k-1}(x) - 3k(k-1)xL_{k}(x) - (k-1)(k-2)L_{k-3}(x)$$
+		再两次利用递推公式替换$L_{k-3}(x)$，得到：
+		$$kL_{k}'(x)(1-x^2) = (4k^2x^2-8kx^2+3x^2+2k - 1)L_{k-1}(x) - 3k(k-1)xL_{k}(x) - (2k-3)x((2k-1)xL_{k-1}(x) - kL_k(x))$$
+		进一步化简得到：
+		$$kL_{k}'(x)(1-x^2) =k^2L_{k-1}(x) - k^2xL_{k}(x) $$
+		即：
+		$$L_{k}'(x)(1-x^2) =kL_{k-1}(x) - kxL_{k}(x) $$
+		证毕\\\\
+		\item[6.]设$f\in C[0, 2\pi]$，且满足$f(0) = f(2\pi)$，记$S_{n} = span\{1,\cos x, \sin x, \cdots, \cos(nx), \sin(nx)\}.$\\
+		(1)证明：生成$S_{n}$的函数组相互正交.\\
+		(2)试求$f_{*} = arg \min\limits_{g\in S_{n}}||f-g||_{2}$，其中$||g||_{2} = (\int_{0}^{2\pi}g^2(x)dx)^{\frac{1}{2}}$\\\\
+		(1)$\forall g_1(x), g_2(x) \in S_{n}$，分类讨论：\\
+		当$g_1(x) = sin(mx), g_2(x) = sin(nx), m,n$为整数且$m, n > 0$时：
+		$$\int_{0}^{2\pi}sin(mx)sin(nx)dx = \left\{ 
+		\begin{array}{lcl}
+		0 && m \ne n\\
+		\pi && m = n
+		\end{array}
+		\right.$$
+				当$g_1(x) = cos(mx), g_2(x) = cos(nx), m,n$为整数且$m, n > 0$时：
+		$$\int_{0}^{2\pi}cos(mx)cos(nx)dx = \left\{ 
+		\begin{array}{lcl}
+		0 && m \ne n\\
+		\pi && m = n
+		\end{array}
+		\right.$$
+		当$g_1(x) = cos(mx), g_2(x) = sin(nx), m,n$为整数且$m, n > 0$时：
+			$$\int_{0}^{2\pi}cos(mx)sin(nx)dx = 0$$
+		当$g_1(x) = 1, g_2(x) = sin(nx), n$为整数且$n > 0$时：
+		$$\int_{0}^{2\pi}sin(nx)dx = 0$$
+		当$g_1(x) = 1, g_2(x) = cos(mx), m$为整数且$m > 0$时：
+		$$\int_{0}^{2\pi}cos(mx)dx = 0$$
+		当$g_1(x) = 1, g_2(x) = 1$时：
+		$$\int_{0}^{2\pi}1dx = 2\pi$$
+		所以可以证明生成$S_{n}$的函数组相互正交\\\\
+		(2)我们可以猜想满足条件的$p(x) \in S_{n}$为原函数的傅里叶级数展开，然后在证明其满足最佳平方逼近的条件即可。
+		构造函数
+		$$p(x) = \frac{a_{0}}{2} + \sum_{n = 1}^{n}(a_{k}\cos (kx) + b_{k} \sin (kx))$$
+		其中：
+		$$a_{k} = \frac{1}{\pi}\int_{0}^{2\pi}f(x)cos(kx)dx , n= 0, 1, 2 \cdots$$
+		$$b_{k} = \frac{1}{\pi}\int_{0}^{2\pi}f(x)sin(kx)dx , n= 1, 2 \cdots$$
+		值得注意的是：
+		$$a_{0} = \frac{1}{\pi}\int_{0}^{2\pi}f(x)dx = 0 $$
+		则：
+		$$p(x) = \sum_{n = 1}^{n}(a_{k}\cos (kx) + b_{k} \sin (kx))$$
+		假设$\phi_{n}(x)$为任意$S_{n}$中的函数，且有$\phi_{0} = 1$，$r_n$为之前我们所构造得到的系数$a_n$与$b_n$的集合，由书中已经得出的结论如果我们所构造的函数满足：
+		$$\sum_{j = 0}^{n}(\phi_{k}(x), \phi_{j}(x))r_{j} = (f(x), \phi_{k}(x)), k = 0, 1, \cdots, n$$
+		就能证明$p(x)$为原函数的最小二次逼近，所以有：
+		$$\sum_{j = 0}^{n}(\phi_{k}(x), \phi_{j}(x))r_{j} = \sum_{j=0}^{n} \int_{0}^{2\pi}\phi_{j}\phi_{k}\,dx \, (\frac{1}{\pi}\int_{0}^{2\pi}f(x)\phi_{k}(x)\,dx) $$
+		观察我们在上一问中得到的结论：
+		$$\int_{0}^{2\pi}\phi_{j}\phi_{k}\,dx = \left\{
+		\begin{array}{lcl}
+		\pi && j = k\quad j, k\ne 0,\\
+		2\pi && j = k = 0\\
+		0 && j \ne k
+		\end{array}
+		\right.$$
+		则有
+		$$\sum_{j = 0}^{n}(\phi_{k}(x), \phi_{j}(x))r_{j} = \int_{0}^{2\pi}f(x)\phi_{k}(x)\,dx$$
+		满足最小二次逼近的要求,所以：
+		$$f_{*}(x) = \sum_{n = 1}^{n}(a_{k}\cos (kx) + b_{k} \sin (kx))$$
+		其中
+		$$a_{k} = \frac{1}{\pi}\int_{0}^{2\pi}f(x)cos(kx)dx \quad n= 1, 2 \cdots$$
+		$$b_{k} = \frac{1}{\pi}\int_{0}^{2\pi}f(x)sin(kx)dx \quad n= 1, 2 \cdots$$\\\\
+		\item[7.]已知实验数据如下：
+		\begin{table}[!htbp]
+			\centering
+			\begin{tabular}{c|ccccc}
+				
+				\hline
+				$x_{i}$ & 19 & 25 & 31 & 38 & 44\\
+				\hline
+				$y_{i}$ & 19.0 & 32.3 & 49.0 & 73.3 & 97.8\\
+				\hline
+			\end{tabular}
+		\end{table}
+	使用MATLAB编程，用最小二乘法求形如$y = a + bx^{2}$的经验公式，并计算均方误差.\\\\
+	假设我们所求的函数为：
+	$$y(x) = a +bx^2$$
+	则要求：
+	$$R(a, b) = \sum_{i = 1}^{5}[y_{i} - y(x_{i})]^2 = \sum_{i = 1}^{5}(y_{i} - a - bx_{i}^2)^2$$
+	取得最小值，即：
+	$$\frac{\partial R(a,b)}{\partial a} = 0$$
+	$$\frac{\partial R(a,b)}{\partial b} = 0$$
+	由此得到线性方程组：
+	$$\left\{
+	\begin{array}{lcl}
+	a + (\sum\limits_{i = 1}^{5}x_{i}^2)b = \sum\limits_{i = 1}^{5}y_{i}\\
+	(\sum\limits_{i = 1}^{5}x_{i}^2)a+(\sum\limits_{i = 1}^{5}x_{i}^4)b = \sum\limits_{i = 1}^{5}x_{i}^2y_{i}
+	\end{array}
+	\right.$$
+	可以利用MATLAB编程解此线性方程组得到解以及均方误差：
+	\begin{lstlisting}[language=MATLAB]
+		function res = lesq(x, y)
+		a0 = 1;
+		tmp = x.^2;
+		a1 = sum(tmp);
+		tmp1 = tmp.*y;
+		tmp = tmp.^2;
+		a3 = sum(tmp);
+		a4 = sum(tmp1);
+		a5 = sum(y);
+		lhs = [a0, a1;a1, a3];
+		rhs = [a5, a4]';
+		res = lhs\rhs;
+		error = sum((res(1) + res(2).*(x.^2) - y).^2);
+		res(3) = error;
+		end
+	\end{lstlisting}
+	最后的结果及均方误差为:
+	$$\left\{
+	\begin{array}{lcl}
+	a = -0.3693\\
+	b = 0.0510\\
+	\delta = 1.9972
+	\end{array}
+	\right.$$
+	\end{itemize}
+\end{document}

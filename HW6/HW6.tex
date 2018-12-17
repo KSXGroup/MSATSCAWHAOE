@@ -1,0 +1,126 @@
+\documentclass{article}
+\usepackage{ctex}
+\usepackage{geometry}
+\usepackage{amsfonts,amssymb}
+\usepackage{listings} 
+\usepackage{fontspec}
+\usepackage{graphicx}
+\geometry{a4paper,left=2.5cm,right=2.5cm,top=2cm,bottom=2cm}
+\renewcommand{\baselinestretch}{1.5}
+\title{科学计算作业6}	
+\author{张文涛 517030910425}
+\date{\today}
+\lstset{columns=flexible,numbers=left,numberstyle=\tiny,basicstyle=\small,keywordstyle=\color{blue!70},commentstyle=\color{red!50!green!50!blue!50}, rulesepcolor= \color{ red!20!green!20!blue!20} }
+\begin{document}
+	\maketitle
+	\begin{itemize}
+		\item[1.]已知$f\in C[a, b]$，且对任一函数$g\in C_{0}^{2}[a ,b]$成立
+		$$\int_{a}^{b}f(x)g(x)dx = 0,$$
+		证明：在[a, b]上$f\equiv 0$。这里$C_{0}^{2}[a ,b] = \{g\in C ^{2}[a, b]:\quad g(a) = g(b) = 0\}$\\
+		证：由题意得
+		$$\forall g\in C_{0}^{2}[a ,b],\int_{a}^{b}f(x)g(x)dx = 0 \quad \Rightarrow \quad f\equiv 0$$
+		证明其逆否命题：
+		$$ f \not\equiv 0 \quad \Rightarrow \quad \exists g\in C_{0}^{2}[a ,b],\int_{a}^{b}f(x)g(x)dx \ne 0$$
+		不失一般性地假设$f(x)$在非边界处$x_p$处大于零。由连续函数的连续性可知：
+		$$\exists\, \delta > 0, \forall x \in (x_p - \delta, x_p + \delta),\, f(x) > 0$$
+		记$x_p - \delta = x_1$，$x_p + \delta = x_2$，构造出一个$g(x)$：
+		$$g(x) = \left\{
+			\begin{array}{lcl}
+			0 && x\in[a, x_1] \cup [x_2, b]\\
+			(x - x_1)^2(x - x_2)^2 && x\in [x_1, x_2]
+			\end{array}
+		\right.$$
+		代入原式，则有：
+		$$\int_{a}^{b}f(x)g(x)dx  = \int_{x_1}^{x_2}f(x)g(x)dx > 0$$
+		对于边界情况，也可以找到合适的$\delta$，使得在$[a, a + \delta]$或$[b - \delta, b]$上$f(x) > 0$。\\
+		对于$f(x) < 0$的情况也可以同理讨论。\\
+		所以逆否命题成立，得证。\\\\
+		\item[2.]证明以下变分问题无解：
+		$$\min\limits_{y \in K} \int_{-1}^{1}x^2(y'(x))^2\, dx$$
+		式中
+		$$K = \{y\in C^1[-1, 1]: \quad y(-1) = -1, y(1) = 1\}.$$\\
+		证：利用反证法，假设最优解存在且为$y^*$，\\
+		记$F(x, y'(x)) = x^2(y'(x))^2$，\\
+		则由泛函极值存在必要条件：\\
+		任取$v(x)\in C^1[-1,1]$满足$ v(-1) = 0, v(1) = 0$,任取$\epsilon$作为参数，都有：
+		$$\left.\frac{d}{d\epsilon}\int_{-1}^{1}F(x,( y^{*}(x))' + \epsilon v'(x))\,dx\right|_{\epsilon = 0} = 0 $$
+		交换微分积分顺序并计算得到：
+		$$\int_{-1}^{1}2x^2(y^{*}(x))'v'(x) = 0$$
+		现取一个$v_s(x) \in C^3[-1, 1] \subset C^1[-1 , 1]$，使得$v(-1) = v(1) = v'(-1) = v'(1) = 0$\\
+		则此时可以利用第一题的结论推出：
+		$$2x^2(y^*(x))' \equiv 0, x\in[-1, 1]$$
+		则有$(y^*(x))' \equiv 0$，即$y^*(x)$为常数，与$y^*(-1) = -1\,, y^*(1) = 1$矛盾，故最优解不存在。\\\\
+		\item[3.]对于求解最速降线问题导出的非线性常微分方程的定解问题：$y(1 +(y')^2) = c = constant$，$y(0) = 0$，$y(x_1) = y_1$，求出其解。\\\\
+		解：利用参数$t$假设$\frac{dy}{dx} = \cot t$，则代入方程得到$y = c\sin^2t$，于是：
+		$$\frac{dx}{dt} = \frac{\frac{dy}{dt}}{\frac{dy}{dx}} = \frac{2c\sin t \cos t}{\cot t} = 2c\sin ^2  = c(1 - \cos 2t)$$
+		两端对$t$积分，得到：
+		$$x = c(t - \frac{1}{2}\sin 2t) + C$$
+		根据初值可以得到$C = 0$，于是原微分方程的解为：
+		$$\left\{
+		\begin{array}{lcl}
+		x = c(t - \frac{1}{2}\sin 2t)\\
+		y = csin^2t
+		\end{array}
+		\right.$$\\
+		\item[4.]（渡江问题）：设一条河为带状，$y = 0,\,y=1$为河的两岸，河水的流动沿$x$轴的正向，速度为$y$的函数：$v = v(y) = 6y(1-y).$现有人以匀速$v_0$从$(0,0)$点出发到达对岸$(L, 1)$点，$L \ge 0.\,$问游泳者在游泳中如何让调整游泳方向$\theta(y)$，使得到达$(L, 1)$点的时间最短？利用变分法写出该问题的数学模型，并导出相应的Euler-Lagrange方程。\\
+		答：记渡江时间为$t$，则可以列出表达式：
+		$$t = \int_{0}^{L}\sqrt{\frac{1+(y'(x))^2}{v_0^2 + 36y^2(1-y)^2 - 12v_0y(1-y)cos(\theta(y))}}\,dx$$
+		由必要条件：
+		$$F_y - \frac{d}{dx}F_{y'} = 0$$
+		导出Euler-Lagrange方程：
+		$$-\frac{1}{2}(1 + (y')^2)^{\frac{1}{2}}(v_{0}^2 + 36y^2(1-y)^2 - 12v_0y(1-y)\cos(\theta(y)))^{-\frac{3}{2}}$$
+		$$*(72y(1-y)(1-2y)- 12v_0(1-2y)\cos(\theta(y)) - y(1-y)\sin(\theta(y))\theta'(y))$$
+		$$+y''(1+(y')^2)^{-\frac{1}{2}}(v_0 + 36y^2(1-y)^2 - 12v_0y(1-y)\cos(\theta(y)))^{-\frac{1}{2}}$$
+		$$-(y')^2(1+(y')^2)^{-\frac{3}{2}}y''(v_0^2 + 36y^2(1-y)^2 - 12v_0y(1-y)\cos(\theta(y)))^{-\frac{1}{2}}$$
+		$$+y'(1+(y')^2)^{-\frac{1}{2}}(72y(1-y)(1-2y)- 12v_0(1-2y)\cos(\theta(y)) - y(1-y)\sin(\theta(y))\theta'(y))$$
+		$$*[72y'(6y^2 - 6y + 1)+24v_0y'\cos(\theta(y)) + 12v_0(1-2y)\sin(\theta(y))\theta'(y)y'$$
+		$$-(y'(1-y)\sin(\theta(y))\theta'(y)) - yy'\sin(\theta(y))\theta'(y) + y'y(1-y)\cos(\theta(y))(\theta'(y))^2 
+		+ yy'(1-y)\cos(\theta(y))\theta''(y)] = 0$$
+		\item[5.]将变分问题中的容许集$K$修改为
+		$$K = \{y\in C^{1}[x_0, x_1]: \, y(x_0) = y_0, y(x_1) = y_1\}$$
+		分两步研究其解$y^*$应满足的条件。\\
+		(1)设$f(x)\in C[x_0, x_1]$，如果
+		$$\int_{x_0}^{x_{1}}f(x)\phi'(x)\,dx = 0 \quad \forall \phi \in C^{1}_{0}[x_{0}, x_{1}],$$
+		则$f(x) = $常数，$x \in [x_0, x_1].$这里$C_{0}^{1}[x_0, x_1] = \{g\in C^1[x_0, x_1]:\, g(x_0) = g(x_1) = 0\}$\\
+		(2)解$y^*$满足
+		$$\int_{x_0}^{x}F_{y}(x, y(x), y'(x))dx - F_{y'}(x, y(x), y'(x))=\mbox{常数},\quad x\in[x_0, x_1]$$\\
+		证：(1)原题要证：
+		$$f(x)\in C[x_0, x_1] \quad \forall \phi \in C^{1}_{0}[x_{0}, x_{1}] \quad \int_{x_0}^{x_{1}}f(x)\phi'(x)\,dx = 0 \Rightarrow f(x) =\mbox{常数}$$
+		我们可以证明其逆否命题：
+		$$f(x) \ne \mbox{常数} \Rightarrow f(x)\in C[x_0, x_1] \quad \exists \phi \in C^{1}_{0}[x_{0}, x_{1}] \quad \int_{x_0}^{x_{1}}f(x)\phi'(x)\,dx \ne 0$$
+		则可以不失一般性的假设$f(x)$在$x_p, x_q$两点上函数值不同且$x_p<x_q$，由函数的连续性有：\\
+		$$\forall \epsilon_1, \exists\, \delta_1 \forall x \in[x_p - \delta_1,  x_p + \delta_1]\, s.t.\,|f(x_p) - f(x)| < \epsilon_1$$
+		$$\forall \epsilon_2, \exists\, \delta_2 \forall x \in[x_q - \delta_2,  x_q + \delta_2]\, s.t.\,|f(x_q) - f(x)| < \epsilon_2$$
+		记$x_p - \delta_1 = a_1, \, x_p + \delta_1 = b_1\, \quad x_q - \delta_1 = a_2, \, x_q + \delta_1 = b_2$
+		构造一个满足条件的$\phi(x)$：
+		$$
+		\phi(x) = \left\{
+		\begin{array}{lcl}
+		0 && x\in [x_0, a_1] \cup [b_2, x_1]\\
+		1 && x\in [b_1, a_2]\\
+		\frac{1}{(b_1 -a_1)^4}(x -a_1)^2(x - (2b_1 - a_1))^2 && x\in [a_1, b_1]\\
+		\frac{1}{(b_2 -a_2)^4}(x -b_2)^2(x - (2a_2 - b_2))^2 && x\in [a_2, b_2] 
+		\end{array}
+		\right.$$
+		则有：
+		$$\int_{x_0}^{x_{1}}f(x)\phi'(x)\,dx = \int_{a_1}^{b_1}f(x)\phi'(x)\,dx + \int_{a_2}^{b_2}f(x)\phi'(x)\,dx$$
+		又可以验证$\phi(x)$在$[a_1, b_1]$及$[a_2, b_2]$上保号，则利用积分第一中值定理：
+		$$\exists\, \xi_1\in [a_1, b_1]\,, \xi_2 \in [a_2, b_2]\quad  \int_{a_1}^{b_1}f(x)\phi'(x)\,dx + \int_{a_2}^{b_2}f(x)\phi'(x)\,dx = f(\xi_1) - f(\xi_2)$$
+		由于$\epsilon_1\, ,\epsilon_2$的任意性，可以将$\epsilon_1\, ,\epsilon_2$取到足够小，可以认为$f(\xi_1) - f(\xi_2)\ne 0$。\\
+		故逆否命题得证，于是原命题成立。\\\\
+		(2)则由泛函极值存在必要条件：\\
+		任取$v(x)\in C^1[x_0,x_1]$满足$ v(x_0) = 0, v(x_1) = 0$,任取$\epsilon$作为参数，都有：
+		$$\left.\frac{d}{d\epsilon}\int_{x_0}^{x_1}F(x,y(x) + \epsilon v(x), ( y^{*}(x))' + \epsilon v'(x))\,dx \right|_{\epsilon = 0} = 0 $$
+		交换微分积分顺序并计算得到：
+		$$\left.\frac{d}{d\epsilon}\int_{x_0}^{x_1}F(x,y(x) + \epsilon v(x), ( y^{*}(x))' + \epsilon v'(x))\,dx \right|_{\epsilon = 0}$$ 
+		$$ = \int_{x_0}^{x_1}F_y(x,y(x), ( y^{*}(x))')v(x)\,dx + F_{y'}(x,y(x), ( y^{*}(x))')v'(x)$$
+		记$\int_{x_0}^{x}F_y(t, y(t), (y*(t))')\,dt = P(x)$，则有：
+		$$\int_{x_0}^{x_1}P'(x)v(x) + F_{y'}(x,y(x), ( y^{*}(x))')v'(x)\,dx$$
+		利用分部积分公式，有：
+		$$\int_{x_0}^{x_1}P'(x)v(x) + F_{y'}(x,y(x), ( y^{*}(x))')v'(x)\,dx = -\int_{x_0}^{x_1}P(x)v'(x)\,dx +  \int_{x_0}^{x_1} F_{y'}(x,y(x), ( y^{*}(x))')v'(x)\,dx$$
+		$$=\int_{x_0}^{x_1}(F_{y'}(x,y(x), ( y^{*}(x))') - P(x))v'(x)\,dx$$
+		由(1)中的结论：
+		$$F_{y'}(x,y(x), ( y^{*}(x))') - \int_{x_0}^{x}F_y(t, y(t), (y*(t))')\,dt = const$$
+		由此得证。
+	\end{itemize}
+\end{document}

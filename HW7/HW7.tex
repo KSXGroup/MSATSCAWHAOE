@@ -1,0 +1,259 @@
+\documentclass{article}
+\usepackage{ctex}
+\usepackage{geometry}
+\usepackage{amsfonts,amssymb, amsmath}
+\usepackage{listings} 
+\usepackage{fontspec}
+\usepackage{graphicx}
+\geometry{a4paper,left=2.5cm,right=2.5cm,top=2cm,bottom=2cm}
+\newcommand*{\dif}{\mathop{}\!\mathrm{d}}
+\renewcommand{\baselinestretch}{1.5}
+\title{科学计算作业7}	
+\author{张文涛 517030910425}
+\date{\today}
+\lstset{columns=flexible,numbers=left,numberstyle=\tiny,basicstyle=\small,keywordstyle=\color{blue!70},commentstyle=\color{red!50!green!50!blue!50}, rulesepcolor= \color{ red!20!green!20!blue!20} }
+\begin{document}
+	\maketitle
+	\begin{itemize}
+		\item[1.]确定下列求积公式中的特定参数，使其代数精度尽量高，并指明其代数精度\\
+		$$(1)\int_{-h}^{h}f(x)\,dx\approx Af(-h) + Bf(0) + Cf(h) +Dhf'(h);$$
+		$$(2)\int_{0}^{h}f(x)\,dx\approx\frac{h}{2}[f(0) + f(h)] + ah^{2}[f'(0) - f'(h)];$$
+		$$(3)\int_{0}^{1}f(x)\,dx\approx Af(0) + Bf(1) + Cf''(0) +Df''(1)$$
+		$$(4)\int_{-1}^{1}f(x)\,dx\approx\frac{1}{3}[f(-1)+2f(x_1)+3f(x_2)]$$
+		$$(5)\int_{0}^{1}\frac{1}{\sqrt{x}}f(x)\,dx\approx \omega_{0}f(x_{0})+\omega_{1}f(x_1)$$\\
+		(1)有四个自由度，可以有三次代数精度，分别将$\mbox{常数},x,x^2, x^3$代入计算得线性方程组:
+		\begin{equation}
+			\nonumber
+			\begin{bmatrix} 1 & 1 & 1 & 0\\-h & 0 & h & h\\h^2 & 0 & h^2 & 2h^2 \\-h^3 & 0 & h^3 & 3h^3\end{bmatrix}
+			\begin{bmatrix}A\\B\\C\\D\end{bmatrix}
+			=
+			\begin{bmatrix}2h \\ 0 \\  \frac{2}{3} h^3 \\ 0 \end{bmatrix}
+		\end{equation}
+		解得：
+		\begin{equation}
+			\nonumber
+			\begin{bmatrix}A\\B\\C\\D\end{bmatrix}
+			=
+			\begin{bmatrix}\frac{1}{3}h\\\frac{4}{3}h\\\frac{1}{3}h\\0\end{bmatrix}
+		\end{equation}
+		经过验证，有三次代数精度。\\\\
+		(2)待定系数只有$a$，可以验证当$f(x)$为常数或$x$时精确成立，将$x^2$代入可以计算得到$a = \frac{1}{12}$，并且经过检验对于$x^3$也精确成立。\\\\
+		(3)用与(1)类似的方式列出线性方程组：
+		\begin{equation}
+			\nonumber
+			\begin{bmatrix}1 & 1 & 0 & 0\\0 & 1 & 0 & 0 \\ 0 &1 & 2 & 2\\0 & 1 & 0 & 1\end{bmatrix}
+			\begin{bmatrix}A\\B\\C\\D\end{bmatrix}
+			=
+			\begin{bmatrix}1\\\frac{1}{2}\\\frac{1}{3}\\\frac{1}{4}\end{bmatrix}
+		\end{equation}
+			解得：
+		\begin{equation}
+		\nonumber
+		\begin{bmatrix}A\\B\\C\\D\end{bmatrix}
+		=
+		\begin{bmatrix}\frac{1}{2}\\\frac{1}{2}\\\frac{1}{6}\\-\frac{1}{4}\end{bmatrix}
+		\end{equation}
+		经过验证，有三次代数精度。\\\\
+		(4)可以验证，对于任意常数，原始精确成立。可以将$f(x) = x $及$f(x) = x^2$代入计算待定项。于是得到方程组：
+		$$
+		\left\{
+			\begin{array}{lcl}
+			2x_1 + 3x_2 = 1 \\
+			2x_1^2 + 3x_2^2 = 1 
+			\end{array}
+		\right.
+		$$
+		解得
+		\begin{equation}
+		\nonumber
+		\left\{
+		\begin{array}{lcl}
+			x_1 = \frac{1+\sqrt{6}}{5} \\
+			x_2 = \frac{3-2\sqrt{6}}{15} 
+		\end{array}
+		\right.
+		\qquad
+		\mbox{或}
+		\qquad
+		\left\{
+		\begin{array}{lcl}
+		x_1 = \frac{1-\sqrt{6}}{5} \\
+		x_2 = \frac{3+2\sqrt{6}}{15} 
+		\end{array}
+		\right.
+		\end{equation}
+		经检验$f(x) = x^3$不精确成立，因此有两次代数精度。\\\\
+		(5)利用待定系数法，将$f(x) = c, x, x^2, x^3$代入，得到方程组：
+		解得两个节点及其对应系数为：
+		\begin{equation}
+		\nonumber
+		\left\{
+		\begin{array}{lcl}
+		x_0 = \frac{15-2\sqrt{30}}{35} \\
+		\omega_{0} = \frac{18+\sqrt{30}}{18} 
+		\end{array}
+		\right.
+		\qquad
+		\left\{
+		\begin{array}{lcl}
+		x_1 = \frac{15+2\sqrt{30}}{35} \\
+		\omega_{1} = \frac{18-\sqrt{30}}{18} 
+		\end{array}
+		\right.
+		\end{equation}
+		经过验证，有三次代数精度。\\\\
+		\item[2.]考虑Newton-Cotes公式
+		$$\int_{a}^{b}f(x)\,dx \approx \sum_{i = 0}^{n}A_{i}f(x_i)$$
+		式中$x_i = a_i + h,\quad h =(b- a)/n.$\\
+		证明：\\
+		(1)$A_i = A_{n - i}$\\
+		(2)若$n$是偶数，则其具有$n+1$阶代数精度.\\\\
+		(1)对原函数作等距插值得到插值多项式：
+		$$P_n(x) = \sum_{i = 0}^{n}(\prod_{j = 0\, j\ne i}^{n}\frac{x - x_j}{x_i - x_j})f(x_i)$$
+		$$A_{i} = \int_{a}^{b}\prod_{j = 0\, j\ne i}^{n}\frac{x - x_j}{x_i - x_j}\,dx$$
+		由于已知$x_{i} = a + ih	$，记$x = a + th,\,t\in [0,1]$则有：
+		$$A_{i} = h\int_{0}^{n}\prod_{j = 0\, j\ne i}^{n}\frac{t - j}{i - j}\,dt$$
+		$$A_{i} = \frac{(-1)^{n - i}h}{i!(n - i)!} \int_{0}^{n}\prod_{j = 0\, j\ne i}^{n}(t - j)\,dt$$
+		如果令$i = n - i$，则有：
+		$$A_{n - i} = \frac{(-1)^{i}h}{i!(n - i)!} \int_{0}^{n}\prod_{j = 0\, j\ne n - i}^{n}(t - j)\,dt$$
+		令$t = n -t$，则有：
+		$$A_{n - i} = \frac{(-1)^{n + i}h}{i!(n - i)!} \int_{0}^{n}\prod_{j = 0\, j\ne n - i}^{n}[t - (n - j)]\,dt$$
+		再令$j = n  - j$，则有：
+		$$A_{n - i} = \frac{(-1)^{n + i}h}{i!(n - i)!} \int_{0}^{n}\prod_{j = n\, j\ne i}^{0}(t - j)\,dt$$
+		由于$(-1)^{(n -i） +(n + i)} = (-1)^{2n} $，即$(-1)^{n+i}$与$(-1)^{n- i}$同号，于是$A_i = A_{n - i}$.\\\\
+		(2)假设$f(x)$为$n+1$次多项式，考虑余项，其中$l_i(x)$为Lagrange插值基函数：
+		$$R_n(x) = \int_{a}^{b}(f(x) - \sum_{i=0}^{n}l_i(x)f(x_i)) \,dx$$
+		则由Lagrange插值余项公式得到：
+		$$R_n(x) = \int_{a}^{b}\frac{f^{(n+1)}(\xi)}{(n+1)!}\prod_{i = 0}^{n}(x - x_i)\,dx =\frac{f^{(n+1)}(\xi)}{(n+1)!}\int_{a}^{b}\prod_{i = 0}^{n}(x - x_i)\,dx$$
+		利用与(1)类似替换得到：
+		$$R_n(x) =h^{n + 2}\frac{f^{(n+1)}(\xi)}{(n+1)!}\int_{0}^{n}\prod_{i = 0}^{n}(t - i)\,dt$$
+		令$n = 2k$，有
+		$$R_n(x) =h^{2k + 2}\frac{f^{(n+1)}(\xi)}{(n+1)!}\int_{0}^{2k}\prod_{i = 0}^{2k}(t - i)\,dt$$
+		令$t = p + k$，代入换元得到：
+		$$R_n(x) =h^{2k + 2}\frac{f^{(n+1)}(\xi)}{(n+1)!}\int_{-k}^{k}\prod_{i = 0}^{2k}(t  - (i - k))\,dt = h^{2k + 2}\frac{f^{(n+1)}(\xi)}{(n+1)!}\int_{-k}^{k}t\prod_{i = 0}^{k}(t^2  - i^2)\,dt$$
+		$t\prod_{i = 0}^{k}(t^2  - i^2)\,dt$是奇函数，于是$R_n(x) = 0$，有n+1次代数精度。\\\\
+		\item[3.]对$f(x), g(x)\in C^{1}[a, b]$，定义
+		$$\begin{array}{lcl}
+		(1)(f,g)=\int_{a}^{b}f'(x)g'(x)\,dx;\\
+		(2)(f,g)=\int_{a}^{b}f'(x)g'(x)\,dx + f(a)g(a);
+		\end{array}$$(
+		试问上述表示两种定义是否构成内积并说明原因.\\\\
+		(1)容易验证，原式满足对称性，线性性，正定性，但有：
+		$$\int_{a}^{b}[f'(x)]^2\,dx \not\Rightarrow f(x) = 0$$
+		因此不构成内积空间。\\
+		
+		(2)\\
+		2.1显然，满足对称性。\\
+		2.2$\,\forall\, V(x) \in C^{1}[a, b]\,$有：
+		$$\int_{a}^{b}(f(x) +V(x))'g'(x)\,dx + (f(a) +V(a))g(a) = \int_{a}^{b}f'(x)g'(x)\,dx + f(a)g(a) + \int_{a}^{b}V'(x)g'(x)\,dx +V(a)g(a)$$
+		满足线性性。\\
+		2.3显然满足正定性\\
+		2.4取$f(x) = g(x)$，原式变为：
+		$$\int_{a}^{b}[f'(x)]^2\,dx + f^2(a) = 0$$
+		可以看出$f(x)$为常数且为$0$，因此构成内积空间。\\\\
+		4.试证明$[-1,1]$上Gauss-Legendre求积公式$(\rho(x) = 1)$的节点和求积系数关于原点$x = 0$是对称分布的。\\\\
+		证：Gauss-Legendre多项式的零点是可以被确定的，由Legendre多项式的定义：
+		$$\phi_k(x)=\frac{1}{2^kk!}\frac{\dif^k}{\dif x^k}[(x^2 - 1)^k]$$
+		现需要证明对于$\forall k \in \mathbb{N^{*}}$，若$x_{0}$使$\phi_{k}(x_0) = 0$，则$\phi_{k}(-x_0) = 0$。\\
+		当$k = 1$时，有：
+		$$\phi_{1}(x) = x$$
+		显然成立。
+		当$k = 2$时，有：
+		$$\phi_{2}(x) = \frac{3x^2 - 1}{2}$$
+		$\phi_{2}(x)$为偶函数，结论显然成立。
+		现利用归纳假设，假设$k<p$时结论均成立，要证明$k=p$时结论成立，则利用三项递推关系：
+		$$\phi_{p}(x) = \frac{2k+1}{k+1}x\phi_{p - 1}(x) - \frac{k}{k+1}\phi_{p - 2}(x)$$
+		容易看出$\phi_{p}(x)$也满足这个结论，因此节点关于原点对称分布。\\
+		由于求积系数$A_i$满足：
+		$$A_i = \int_{a}^{b}l_{i}(x)\,\dif x$$
+		其中$l_i(x)$是以Legendre多项式零点为插值节点的原函数的插值基函数。\\
+		所以$l_i(x)$满足：
+		$$
+		\left\{
+		\begin{array}{lcl}
+			l_i(x_i) = 1\\
+			l_j(x_j) = 0 & j \ne i
+		\end{array}
+		\right.
+		$$
+		因此可以确定：
+		$$A_i = \int_{-1}^{1}\prod_{j = 0\, j\ne i}^{n}\frac{x - x_j}{x_i - x_j}\,\dif x$$
+		欲证：$A_i = A_{n -i}$\\
+		$$A_{n - i} =  \int_{-1}^{1}\prod_{j = 0\, j\ne n-i}^{n}\frac{x - x_j}{x_{n-i} - x_j}\,\dif x$$
+		由于$x_{n -i} = -x_i$，由此得到：
+		$$A_{n - i} =  \int_{-1}^{1}\prod_{j = 0\, j\ne n-i}^{n}\frac{x - x_j}{-x_{i} - x_j}\,\dif x$$
+		令$j = n -j$，得到：
+		$$A_{n - i} =  \int_{-1}^{1}\prod_{j = n\, j\ne i}^{0}\frac{x + x_j}{-x_{i} + x_j}\,\dif x$$
+		令$x = -x$，得到：
+		$$A_{n - i} =  \int_{-1}^{1}\prod_{j = n\, j\ne i}^{0}\frac{x - x_j}{x_{i} - x_j}\,\dif x$$
+		于是得证。\\\\
+		\item[5.]考虑加权Gauss求积公式
+		$$\int_{a}^{b}\rho(x)f(x)\approx \sum_{j = 0}^{n}A_jf(x_j)$$
+		记其误差为
+		$$R_n(f)=\int_{a}^{b}\rho(x)f(x)\,\dif x - \sum_{j = 0}^{n}A_jf(x_j).$$
+		求证：
+		$$\left|R_n(f)\right| \le 2\left(\int_{a}^{b}\rho(x)\,\dif x\right)E_{2n+1}(f),$$
+		式中：
+		$$E_{2n+1}(f) =\min_{p\in\mathbb{P}_{2n+1}}||f - p||_{\infty}$$\\
+		证：容易知道：
+		$$\sum_{j = 0}^{n}A_jf(x_j) = \int_{a}^{b}\rho(x)P_n(x)\dif x$$
+		其中$P_n(x)$为以$n+1$次带权正交多项式$\omega_{n+1}(x)$零点为插值节点的原函数的插值多项式。\\
+		令$P_{2n+1}(x)\rho(x) = \omega_{n+1}Q_n(x)\rho(x) + P_n(x)\rho(x)$，其中$Q_n(x)$为任意$n$次多项式，对两边积分，则有：
+		$$\int_{a}^{b}P_{2n+1}(x)\rho(x)\dif x = \int_{a}^{b}P_n(x)\rho(x) \dif x$$
+		代入则有：
+		$$
+			R_n(f) = \int_{a}^{b}\rho(x)(f(x) - P_{2n+1}(x))\,\dif x
+		$$
+		$$
+			\left|R_n(f)\right| \le \int_{a}^{b}\rho(x)\left|(f(x) - P_{2n+1}(x))\right|\,\dif x
+		$$
+		取合适的$Q_n(x)$，就可以有：
+		$$	\left|R_n(f)\right| \le \left|f(\xi) - P_{2n+1}(\xi)\right| \int_{a}^{b}\rho(x)\,\dif x \le 2E_{2n+1}(f) \int_{a}^{b}\rho(x)\,\dif x $$
+		得证。\\\\
+		\item[6.]已知函数$y = f(x)$在节点 $0 = x_0 < x_1 < \cdots< x_n = 1 $处的近似值 $\tilde{y}_i = f(x_i),
+		0 \le i \le n.$ 试用变分方法重构函数$y = f(x)$使其一阶导函数均方取值不大.\\\\
+		证：构造泛函
+		$$J(y) = \sum_{i = 0}^{n - 1}\frac{h_i +h_{i+1}}{2}(\tilde{y}-y(x_i))^2 +\alpha\int_{0}^{1}(y'(x))^2\dif x$$
+		假设$g(x)$为最优解，求其变分：
+		$$\delta J = \sum_{i = 0}^{n - 1}(h_i +h_{i+1})(g(x_i) - \tilde{y_i})v(x_i) + 2\alpha\int_{0}^{1}g'(x)v'(x) $$
+		做一些转化：
+		$$\delta J = \sum_{i = 0}^{n - 1}(h_i +h_{i+1})(g(x_i) - \tilde{y_i})v(x_i) + 2\alpha\sum_{i = 0}^{n - 1}\int_{x_i}^{x_{i+1}}g'(x)v'(x)\dif x $$
+		作分部积分：
+		$$\delta J = \sum_{i = 0}^{n - 1}(h_i +h_{i+1})(g(x_i) - \tilde{y_i})v(x_i) + 2\alpha\sum_{i = 0}^{n - 1}\left(\left. g'(x)v(x)\right|^{x_{i+1}}_{x_i} - \int_{x_i}^{x_{i+1}}g''(x)v(x)\dif x\right) = 0$$
+		令每一部分都为0可以得到解。
+		$$\int_{x_i}^{x_{i+1}}g''(x)v(x)\dif x = 0\, \Rightarrow \, g(x) \in \mathbb{P}_{1}$$
+		考虑$v(x_i)$的系数等于零：
+		$$(h_i + h_{i+1})(g(x_i) - \tilde{y}_{i} + 2\alpha(g'(x_{i} - )+ g'(x_{i}+)) = 0$$
+		因此重构的函数为分段一次多项式且满足以上约束条件。\\\\
+		
+		\item[7.]将积分区间$[0,1]$等距剖分，其格点为${x_i = i/n}^{n}_{i = 0},n = 2, 4, 8, 16, 32.$利用MATLAB使用不同的复化方式在上述网络上计算积分：
+		$$I = \int_{0}^{1}e^{-t}dt.$$
+		(1)复化梯形公式;\\
+		(2)复化Simpson公式;\\
+		(3)复化两点Gauss-legendre公式，即$\int_{-1}^{1}f(x)\dif x\approx \omega_{1}f(x_1) + \omega_{2}f(x_2).$\\\\
+		利用公式，编写函数：
+		\begin{lstlisting}[language=MATLAB]
+		function res = intergrate(x)
+		p =  length(x);
+		res1 = ones(1, p - 1);
+		res2 = res1;
+		res3 = res1;
+		for i = 1:p - 1
+		res3(i) = (x(i +1) - x(i))/2 * (exp(1).^(-(x(i + 1) - x(i))/(2*3.^(0.5)) - (x(i+1) + x(i))/ 2) + exp(1).^((x(i+1) -x(i))/ (2*3.^0.5) - (x(i+1) +x(i))/ 2));
+		end
+		for i = 1:p - 1
+		res1(i) = (x(i+1) - x(i))/2 * (exp(-x(i)) + exp(-x(i+1)));
+		end
+		for i = 1:p - 1
+		res2(i) = (x(i+1) - x(i))/6 * (exp(-x(i)) + 4*exp(-(x(i) +x(i+1))/2) + exp(-x(i+1)));
+		end
+		res = [sum(res1), sum(res2), sum(res3)];
+		\end{lstlisting}
+		输入等距节点：\\
+		在$n = 2\qquad \mbox{时，得到}0.645235190149177\qquad0.632134175320532\qquad0.632111485668374$\\
+		在$n = 4\qquad \mbox{时，得到}0.635409429027693\qquad0.632121414604742\qquad0.632119988381843$\\
+		在$n = 8\qquad \mbox{时，得到}0.632943418210480\qquad0.632120612389173\qquad0.632120523122588$\\
+		在$n = 16\qquad \mbox{时，得到}0.632326313844500\qquad0.632120562177264\qquad0.632120556596104$\\
+		在$n = 32\qquad \mbox{时，得到}0.632172000094072\qquad0.632120559037870\qquad0.632120558689016$\\
+	\end{itemize}
+\end{document}

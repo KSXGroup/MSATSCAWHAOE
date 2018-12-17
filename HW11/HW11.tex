@@ -1,0 +1,223 @@
+\documentclass{article}
+\usepackage{ctex}
+\usepackage{geometry}
+\usepackage{amsfonts,amssymb, amsmath}
+\usepackage{listings} 
+\usepackage{fontspec}
+\usepackage{graphicx}
+\geometry{a4paper,left=2.5cm,right=2.5cm,top=2cm,bottom=2cm}
+\newcommand*{\dif}{\mathop{}\!\mathrm{d}}
+\newcommand{\xc}[1]{\textbf{\emph{#1}}}
+\newcommand{\infnorm}[1]{\|\textbf{\emph{#1}}\|_\infty}
+\newcommand{\infnorminv}[1]{\|\textbf{\emph{#1}}^{-1}\|_\infty}
+\newcommand{\fnorm}[1]{\|\textbf{\emph{#1}}\|_F}
+\newcommand{\twonorm}[1]{\|\textbf{\emph{#1}}\|_2}
+\newcommand{\onenorm}[1]{\|\textbf{\emph{#1}}\|_1}
+\newcommand{\condinf}{\mathrm{cond}_{\infty}}
+\renewcommand{\baselinestretch}{1.5}
+\title{科学计算作业11}	
+\author{张文涛 517030910425}
+\date{\today}
+\lstset{columns=flexible,numbers=left,numberstyle=\tiny,basicstyle=\small,keywordstyle=\color{blue!70},commentstyle=\color{red!50!green!50!blue!50}, rulesepcolor= \color{ red!20!green!20!blue!20} }
+\begin{document}
+	\maketitle
+	\begin{itemize}
+		\item[1.]矩阵第一行乘以一数$\lambda$ , 成为
+		$$
+			\xc{A}=\begin{bmatrix}
+			2\lambda & \lambda\\
+			1&1
+			\end{bmatrix}
+		$$
+		证明当$\lambda = \pm \frac{2}{3}$时，$\condinf(\xc{A})$有最小值.\\
+		\\
+		证：可以容易求得：
+		$$	
+			\xc{A}^{-1} = 	\begin{bmatrix}
+			\frac{1}{\lambda} & -1\\
+			-\frac{1}{\lambda} & 2
+			\end{bmatrix}
+		$$
+		所以有：
+		$$
+			\infnorm{A} = \max\{2, 3|\lambda|\}
+		$$
+		$$
+			\infnorminv{A} = \max\{|\frac{1}{\lambda}| + 1, |\frac{1}{\lambda}| + 2\}
+		$$
+		则有：
+		$$
+			\condinf(\xc{A}) = \infnorm{A}\infnorminv{A} =\left\{ \begin{array}{lcl}
+			-3\lambda(2 - \frac{1}{\lambda}) & \lambda \le -\frac{2}{3}\\
+			2(2 - \frac{1}{\lambda}) & -\frac{2}{3}< \lambda < 0\\
+			2(\frac{1}{\lambda} + 2) & 0<\lambda\le\frac{2}{3}\\
+			3\lambda(\frac{1}{\lambda} + 2) & \lambda > \frac{2}{3}
+			\end{array}
+			\right.
+		$$
+		经过检验，求得最小值为$7$，在$x = \pm \frac{2}{3}$时取到。\\
+		\\
+		\item[2.]设 $\xc{A} = [a_{ij}]_{n×n} $是对称正定矩阵, 经过 Gauss 消去法一步后,$\xc{A}$ 约化为
+		$$
+			\begin{bmatrix}
+				a_{11} & \xc{a}_{1}^{\emph{T}}\\
+				\textbf{0} & \xc{A}_2
+			\end{bmatrix}
+		$$
+		其中$\xc{A}_2 = [a_{ij}^{(2)}]_{n-1}.$证明：\\
+		(1)$\xc{A}$的对角元$a_{ii} > 0,\,i = 1,2,\cdots, n$;\\
+		(2)$\xc{A}_2$是对称正定矩阵\\
+		\\
+		证：\\
+		(1)由于$\xc{A}$是对称正定矩阵，则对于任意$\xc{a}\in\mathbb{C}^{n}$，都有：
+		$$
+			\xc{a}^{*}\xc{A}\xc{a} > 0
+		$$
+		则可以构造一系列$\xc{a} = (a_1, a_2, \cdots, a_n)$，满足$a_i = 1,\, a_j = 0\,(j\ne i), i = 1, 2, 3, \cdots, n$使得:
+		$$
+				\xc{a}^{*}\xc{A}\xc{a} = a_{ii} > 0\quad i = 1, 2, \cdots, n
+		$$
+		所以其对角元大于零。\\
+		\\
+		(2)记题目中的矩阵为$\xc{B}$，则可以找到一系列初等矩阵$\xc{P}_1,\xc{P}_2,\xc{P}_3, \cdots\xc{P}_{n-1}$使得：
+		$$
+			\xc{B} = (\xc{P}_1\xc{P}_2\xc{P}_3\cdots\xc{P}_{n-1})\xc{A}
+		$$
+		记$\xc{P} =\xc{P}_1\xc{P}_2\xc{P}_3\cdots\xc{P}_{n-1}$，则有：
+		$$
+			\xc{C} = \xc{P}\xc{A}\xc{P}^{T} = 
+			\begin{bmatrix}
+			a_{11} & \textbf{0}\\
+			\textbf{0} & \xc{A}_2
+			\end{bmatrix}
+		$$
+		显然$\xc{C}^{T} = \xc{C}$，所以$\xc{A}_2 = \xc{A}_2^T$\\
+		所以$\xc{A}_2$为对称矩阵。\\
+		由于$\xc{A}$是正定的，所以有：
+		$$
+			\forall \xc{b} \in \mathbb{C}^{n}\quad\xc{bAb}^{*} > 0
+		$$
+		$$
+			\xc{b}\xc{PAP}^{T}\xc{b}^{*} > 0 \Rightarrow 	\xc{b}\xc{C}\xc{b}^{*} > 0
+		$$
+		于是证明$\xc{C}$为正定矩阵，所以$\xc{A}$的各阶主子式均大于零，所以$\xc{A}_2$的各阶主子式大于零，于是$\xc{A}_2$为正定矩阵。\\
+		所以$\xc{A}_2$为对称正定矩阵。\\
+		\\
+		
+		3.证明以下矩阵不等式\\
+		(1)$\fnorm{AB}\le\twonorm{A}\fnorm{B}$\\
+		(2)$\twonorm{A}^2\le\onenorm{A}\infnorm{A}$\\\\
+		证：\\
+		(1)记$\xc{B} = (\xc{b}_1, \xc{b}_2, \xc{b}_3, \cdots, \xc{b}_n)$，则有：
+		$$
+			\xc{AB} = \sum_{i= 1}^{n}\xc{A}\xc{b}_i
+		$$
+		$$
+			\|\sum_{i =1}^{n}\textbf{\emph{Ab}}_i\|_2 \le \twonorm{A}\|\sum_{i =1}^{n}\textbf{\emph{b}}_i\|_2 \le  \twonorm{A}\left(\sum_{i =1}^{n}\|\textbf{\emph{b}}_i\|_2\right) = \twonorm{A}\fnorm{B}
+		$$\\
+		\\
+		(2)已知$\twonorm{A}^2 = \lambda_{\max}(\xc{A}^{T}\xc{A})$，令$\xc{u}$为属于$\lambda_{\max}(\xc{A}^{T}\xc{A})$的特征向量，则有：
+		$$
+			\xc{A}^{T}\xc{A}\xc{u} = \lambda_{\max}(\xc{A}^{T}\xc{A})\xc{u} = \twonorm{A}^2\xc{u}
+		$$
+		两边取1-范数，则有：
+		$$
+			\|\textbf{\emph{A}}^T\textbf{\emph{Au}}\|_1 = \twonorm{A}^2\onenorm{u}
+		$$
+		所以有：
+		$$
+			 \twonorm{A}^2\onenorm{u} \le \|\textbf{\emph{A}}^T\textbf{\emph{A}}\|_1\onenorm{u} \Leftrightarrow  \twonorm{A}^2 \le \onenorm{A}^{T} \onenorm{A} = \infnorm{A} \onenorm{A}
+		$$
+		得证。\\
+		\item[4.]设$\xc{A}\in \mathbb{R}^{n\times n},\det\xc{A}\ne 0.$假设$\xc{x}$和$\xc{x}+\delta\xc{x}$分别满足方程组
+		$$
+		\xc{Ax} = \xc{b}	
+		$$
+		$$
+			(\xc{A}+\delta\xc{A})(\xc{x} + \delta\xc{x}) = \xc{b} + \delta\xc{b}
+		$$
+		式中$\xc{b} \ne \xc{0}$而且$\|\delta\xc{A}\|$适当小，使得
+		$$
+		\|\xc{A}^{-1}\|\|\delta\xc{A}\| < 1
+		$$
+		则有
+		$$
+		\frac{\|\delta\xc{x}\|}{\|\xc{x}\|} \le \frac{\|\xc{A}\|\|\xc{A}^{-1}\|}{1 - \|\xc{A}^{-1}\|\|\delta\xc{A}\|}\left(\frac{\|\delta\xc{A}\|}{\|\xc{A}\|}+\frac{\|\delta\xc{b}\|}{\|\xc{b}\|}\right)
+		$$
+		\\
+		证：先证$\xc{I} + \xc{A}^{-1}\delta\xc{A}$可逆，假设其不可逆，则有：
+		$$
+			\exists \xc{x}\in\mathbb{R}^{n} \quad (\xc{I} + \xc{A}^{-1}\delta\xc{A})\xc{x} = \textbf{0}
+		$$
+		则$-1$为$\xc{A}^{-1}\delta\xc{A}$的特征值，我们推出：
+		$$
+		\|\xc{A}^{-1}\|\|\delta\xc{A}\| \ge \xc{A}^{-1}\delta\xc{A}\ge\rho(\xc{A}^{-1}\delta\xc{A}) \ge 1
+		$$
+		与题设矛盾，故$\xc{A}^{-1}\delta\xc{A}$可逆。\\
+		我们还容易看出：
+		$$\|(\xc{A}+\delta\xc{A})(\xc{A}+\delta\xc{A})^{-1}\|=\|(\xc{I} + \xc{A}^{-1}\delta\xc{A})(\xc{I} + \xc{A}^{-1}\delta\xc{A})^{-1}\|= 1$$
+		记$\xc{B} = (\xc{I} + \xc{A}^{-1}\delta\xc{A})^{-1}$，则有：
+		$$
+			1 = \|\xc{B} + \xc{A}^{-1}\delta\xc{A}\xc{B}\| \ge \|\xc{B}\|(1 - \|\xc{A}^{-1}\delta\xc{A}\|)
+		$$
+		所以：
+		$$
+			\|(\xc{I} + \xc{A}^{-1}\delta\xc{A})^{-1}\|\le\frac{1}{1 - \|\xc{A}^{-1}\delta\xc{A}\|}\le\frac{1}{1 - \|\xc{A}^{-1}\|\|\delta\xc{A}\|}
+		$$
+		对于原方程，我们有：
+		$$
+			\delta\xc{x} = 	(\xc{A}+\delta\xc{A})^{-1}(\xc{b} + \delta\xc{b} - (\xc{A}+\delta\xc{A})\xc{x}) = (\xc{A}+\delta\xc{A})^{-1}(\delta\xc{b} - \delta\xc{A}\xc{x})
+		$$
+		两边取范数：
+		$$
+				\|\delta\xc{x}\| = \|\xc{A}^{-1}\|\|(\xc{A}+\delta\xc{A})^{-1}\|\|\delta\xc{b} - \delta\xc{A}\xc{x}\|\le \|\xc{A}^{-1}\|\|(\xc{A}+\delta\xc{A})^{-1}\|(\|\delta\xc{b}\| +\|\delta\xc{A}\xc{x}\|)
+		$$
+		$$
+				 = \|\xc{A}^{-1}\|\|\left(\xc{A}+\delta\xc{A}\right)^{-1}\|\left(\frac{\|\delta\xc{b}\|\|\xc{A}\xc{x}\|}{\|\xc{b}\|} +\|\delta\xc{A}\xc{x}\|\frac{\|\xc{A}\|}{\|\xc{A}\|}\right)\le\frac{\|\xc{A}^{-1}\|\|\xc{A}\|}{1 - \|\xc{A}^{-1}\|\|\delta\xc{A}\|}\left(\frac{\|\delta\xc{b}\|}{\|\xc{b}\|}+ \frac{\|\delta\xc{A}\|}{\|\xc{A}\|}\right)\|\xc{x}\|
+		$$
+		得证。\\
+		\\
+		\item[5.]MATLAB 中命令 lu 可以给出矩阵的的 LU 分解. 假设 n 阶非奇异方阵 A 存在 LU 分解, 请基于命令 lu 设计一个算法求 $\xc{A}^{-1}$，并根据你的算法编写一个序求下列矩阵的逆.
+		$$
+			\xc{H}_4= \begin{bmatrix}
+			1&\frac{1}{2}&\frac{1}{3}&\frac{1}{4}\\
+			\frac{1}{2}&\frac{1}{3}&\frac{1}{4} & \frac{1}{5}\\
+			\frac{1}{3}&\frac{1}{4} & \frac{1}{5} & \frac{1}{6}\\
+			\frac{1}{4} & \frac{1}{5} & \frac{1}{6} & \frac{1}{7}
+			\end{bmatrix}
+		$$
+		利用lu命令编写程序，分别计算$\xc{L},\xc{U}$的逆并相乘：
+		\begin{lstlisting}
+		function res = myinv(A)
+		[l, u, p] = lu(A);
+		resl = diag(ones(1, length(A)));
+		resu = resl;
+		for i = 1:length(l)
+		resl(i, :) = resl(i, :) ./ l(i,i);
+		for j = (i + 1):length(l)
+		resl(j,:) = resl(j, :) - l(j, i).*resl(i,:);
+		end
+		end
+		for i = length(u):-1:1
+		resu(i,:) = resu(i, :) ./ u(i,i);
+		for j = (i - 1):-1:1
+		resu(j,:) = resu(j, :) - u(j, i).*resu(i,:);
+		end
+		end
+		res = resu * resl * p;
+		end
+		\end{lstlisting}
+		得到结果：
+		$$
+		1.0e+03 *
+		$$
+		$$\begin{bmatrix}
+		0.0160  & -0.1200 &   0.2400  & -0.1400\\
+		-0.1200 &   1.2000  & -2.7000 &   1.6800\\
+		0.2400  & -2.7000  &  6.4800   &-4.2000\\
+		-0.1400  &  1.6800 &  -4.2000 &   2.8000
+		\end{bmatrix}
+		$$
+		与使用MATLAB直接求逆结果相差很小。
+		\end{itemize}
+\end{document}
