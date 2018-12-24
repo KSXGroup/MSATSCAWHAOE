@@ -1,0 +1,223 @@
+\documentclass{article}
+\usepackage{ctex}
+\usepackage{geometry}
+\usepackage{amsfonts,amssymb, amsmath}
+\usepackage{listings} 
+\usepackage{fontspec}
+\usepackage{graphicx}
+\usepackage{bm}
+\newcommand{\xc}[1]{\textbf{\emph{#1}}}
+\geometry{a4paper,left=2.5cm,right=2.5cm,top=2cm,bottom=2cm}
+\renewcommand{\baselinestretch}{1.5}
+\title{科学计算作业12}	
+\author{张文涛 517030910425}
+\date{\today}
+\lstset{columns=flexible,numbers=left,numberstyle=\tiny,basicstyle=\small,keywordstyle=\color{blue!70},commentstyle=\color{red!50!green!50!blue!50}, rulesepcolor= \color{ red!20!green!20!blue!20} }
+\begin{document}
+	\maketitle
+	\begin{itemize}
+		\item[1.]对于线性方程组$\xc{Ax} = \xc{b}$, 使用迭代法
+		$$
+			\xc{x}^{(k)} = \xc{x}^{(k)} + \alpha(\xc{Ax}^{(k)} - \xc{b}),\qquad  k = 0,1,\cdots 
+		$$
+		求解，若
+		$$
+			\xc{A} = \begin{bmatrix}
+				3 & 1 \\
+				2 & 2
+			\end{bmatrix}
+		$$
+		(1)试求$\alpha$的取值范围使得迭代法收敛;\\
+		(2)若$\alpha$选取适当的值可以使得上述迭代法收敛，试问$\alpha$取何值时上述迭代法收敛速度最快？\\
+		\\
+		(1)要求$\xc{I} + \alpha\xc{A}$的最大特征值的绝对值(谱半径),利用特征多项式：
+		$$
+			|(1 - \lambda)\xc{I} + \alpha\xc{A}| = \lambda^2 - \lambda(5\alpha + 2) + 4\alpha^2 + 5\alpha + 1 = 0
+		$$
+		解得：
+		$$
+			\lambda = \left|\frac{5\alpha + 2 \pm |3\alpha|}{2}\right|
+		$$
+		经过验证，当$\alpha >= 0$时，$|\lambda| \ge 1$，舍去。\\
+		当$\alpha < 0$时，有条件：
+		$$
+			4\alpha + 1 > -1 \Rightarrow \alpha > -\frac{1}{2}
+		$$
+		所以$\alpha \in (-\frac{1}{2}, 0)$时迭代法收敛。\\
+		\\
+		(2)利用同一个分段函数，最小值在$|4\alpha +1| = |\alpha + 1|$的临界点取到，即$\alpha = -\frac{2}{5}$取到，此时$\lambda = 0.6$。\\
+		\\
+		\item [2.]设$\xc{A}$是严格对角占优矩阵, 证明求解线性方程组$\xc{Ax} = \xc{b}$ 的 Jacobi 迭代法收敛.\\
+		\\
+		证：由Jacobi方法，构造迭代方程：
+		$$	
+			\xc{A} = \xc{D} -\xc{L} -\xc{U}
+		$$
+		$$
+			\xc{x}^{(k+1)} = (\xc{L}+\xc{U})\xc{D}^{-1}\xc{x}^{(k)} + \xc{D}^{-1}b
+		$$
+		假设$\lambda$为矩阵$\xc{J} = (\xc{L}+\xc{U})\xc{D}^{-1}$的特征值，考虑$J$的特征多项式：
+		$$
+			|\xc{I}\lambda - (\xc{L}+\xc{U})\xc{D}^{-1}| = |\xc{D}^{-1}||\xc{D} - (\xc{L} + \xc{U})| = 0
+		$$
+		由于$|\xc{D}^{-1}| \ne 0$，所以$|\lambda\xc{D} - (\xc{L} + \xc{U})| = 0$，即有：
+		$$
+			\left|
+			\begin{array}{cccc}
+			\lambda a_{11} & a_{12} & \cdots & a_{1n}\\
+			a_{21} & \lambda a_{22} & \cdots & a_{2n}\\
+			\vdots & \vdots & \quad & \vdots\\
+			a_{n1} & a_{n2} & \cdots & \lambda a_{nn}\\
+			\end{array}
+			\right| = 0
+		$$
+		但当$|\lambda| \ge 1$时，矩阵$\lambda\xc{D} - (\xc{L} + \xc{U})$严格对角占优，因此是非奇异的，所以行列式$|\lambda\xc{D} - (\xc{L} + \xc{U})|\ne 0$，所以可以认为$|\lambda| < 1$，所以$\rho(\xc{D} - (\xc{L} + \xc{U})) < 1$，因此迭代法收敛。\\
+		\\
+		\item[3.]若$\xc{A}$是严格对角占优的对称矩阵或不可约对角占优的对称矩阵, 且对角线元素为正, 则$\xc{A}$正定.\\
+		\\
+		证：由于$\xc{A}$为实对称阵，则$\xc{A}$有实特征值，若$\xc{A}$非正定，则存在某一特征值$\lambda_p \le 0$，特征值满足特征多项式：
+		$$
+			|\xc{A} - \lambda_p\xc{I}| = 0
+		$$
+		显然若$\lambda_p \le 0$，则$\xc{A} - \lambda_p\xc{I}$是严格对角占优或不可约对角占优的，所以不可能为奇异的，所以$|\xc{A} - \lambda_p\xc{I}| \ne 0$，矛盾。故$\xc{A}$的特征值均大于零，所以为正定的。\\
+		\\
+		\item[4.]设$\xc{A}\in \mathbb{R}^{n\times n},$ 且$ \xc{A} $对称, 可按照如下步骤研究 Jacobi 迭代与 Gauss-Seidel 迭代求解线性方程组 $\xc{Ax} = \xc{b}$的收敛性.\\
+		(1)设$\xc{A}$对称正定，记
+		$$
+			\|\xc{x}\|_{\xc{A}} = \sqrt{(\xc{Ax},\xc{x})},\quad \in \mathbb{R}^{n}
+		$$
+		证明$\|\xc{x}\|_{\xc{A}}$是$\mathbb{R}_n$上的一种范数；\\
+		(2)设$\xc{A}$对称正定，若存在可逆矩阵$\xc{P}$使得$2\xc{P} - \xc{A}$正定，则迭代法
+		$$
+			\xc{x}^{(k+1)} =\xc{x} ^{(k)} + \xc{P}^{-1}(b - \xc{Ax}^{(k)}),\quad k = 0, 1,\cdots
+		$$
+		收敛;\\
+		(3)若$\xc{A}$对称, 利用上述得到的结论, 分别导出 Jacobi 迭代与 Gauss-Seidel 迭代求
+		解线性方程组 $\xc{Ax} = \xc{b}$ 收敛的充分条件.\\\\
+		
+		(1)\\
+		对于任意$\xc{x}\in \mathbb{R}^{n} \ne \textbf{0}, \,\, \|\xc{x}\|_{\xc{A}} = \sqrt{\xc{x}^{T}\xc{A}\xc{x}}$，由于$\xc{A}$为正定矩阵，所以$\xc{x}^{T}\xc{A}\xc{x} > 0$，所以$\forall x\in \mathbb{R}^{n}, \,\, \|\xc{x}\|_{\xc{A}} \ge 0$且满足$\xc{x} = \textbf{0}$时，$\|\xc{x}\|_{\xc{A}} = 0$，满足正定性。\\
+		并且$\forall k \in \mathbb{R},\,\,\|k\xc{x}\|_{\xc{A}} = \sqrt{k^2\xc{x}^{T}\xc{A}\xc{x}} = |k|\sqrt{\xc{x}^{T}\xc{A}\xc{x}} = |k|\|k\xc{x}\|_{\xc{A}}$，满足齐次性\\
+		作为范数，还需要满足三角不等式，即：
+		$$
+			\|\xc{u} + \xc{v}\| \le \|\xc{u}\| + \|\xc{v}\|
+		$$
+		即要证：
+		\begin{align*}
+			\sqrt{(\xc{u} +\xc{v})^{T}\xc{A}(\xc{u} + \xc{v})} \le \sqrt{\xc{u}^{T}\xc{A}\xc{u}}+\sqrt{\xc{v}^{T}\xc{A}\xc{v}}\\
+			\Leftrightarrow (\xc{u}^{T}\xc{A}\xc{v} + \xc{v}^{T}\xc{A}\xc{u})^2 \le 4(\xc{u}^T\xc{A}\xc{u})(\xc{v}^{T}\xc{A}\xc{v})
+		\end{align*}
+		由于$\xc{A}$为对称正定，则$\exists\xc{B}$使得$\xc{A} = \xc{B}^{T}\xc{B}$，所以有：
+		\begin{align*}
+			4(\xc{Bu}, \xc{Bv})^2 \le 4(\xc{Bu},\xc{Bu})(\xc{Bv},\xc{Bv})
+		\end{align*}
+		即柯西不等式，于是满足三角不等式。于是$\|\xc{x}\|_{\xc{A}} $是范数。\\
+		
+		(2)考虑$\|\xc{x}\|_A^2$的单调性。\\
+		由原式可以推出：
+		$$
+			\xc{e}^{(k+1)} = (\xc{I} - \xc{P}^{-1}\xc{A})\xc{e}^{(k)}
+		$$
+		两边减去$\xc{e}^{(k)}$，记$\xc{e}^{(k)} - \xc{e}^{(k + 1)} = \bm{\delta}^{(k)}$，得到：
+		$$
+				\bm{\delta}^{(k)} = -\xc{P}^{-1}\xc{A}\xc{e}^{(k)}
+		$$
+		则可以将$(\xc{e}^{(k+1)}, \xc{A}\xc{e}^{(k+1)})$转化表示：
+		$$
+			(\xc{e}^{(k+1)}, \xc{A}\xc{e}^{(k+1)}) = (\xc{e}^{(k)}, \xc{A}\xc{e}^{(k)}) - (\xc{e}^{(k)}, \xc{A}\xc{P}^{-1}\xc{A}\xc{e}^{k}) - (\xc{P}^{-1}\xc{A}\xc{e}^k, \xc{A}\xc{e}^k) + (\xc{P}^{-1}\xc{A}\xc{e}^{k}, \xc{A}\xc{P}^{-1}\xc{A}\xc{e}^k)
+		$$
+		将$	\bm{\delta}^{(k)} = -\xc{P}^{-1}\xc{A}\xc{e}^{(k)}$代入得到：
+		$$
+			(\xc{e}^{(k+1)}, \xc{A}\xc{e}^{(k+1)}) -  (\xc{e}^{(k)}, \xc{A}\xc{e}^{(k)}) = (\bm{\delta}^{(k)}, \xc{A}\bm{\delta}^{(k)}) - 2(\bm{\delta}^{(k)}, \xc{P}\bm{\delta}^{(k)}) 
+		$$
+		由于$2\xc{P} - \xc{A}$正定，则可看出$(\xc{e}^{(k+1)}, \xc{A}\xc{e}^{(k+1)}) -  (\xc{e}^{(k)}, \xc{A}\xc{e}^{(k)}) \le 0$，所以$\|\xc{x}\|_A^2$单调减，且$\|\xc{x}\|_A^2 \ge 0$,则单调递减有下界。所以$\|\xc{x}\|_A^2$收敛。假设存在极限$\xc{e}_{*}$，代入$\xc{e}^{(k)}$的递推关系得到：
+		$$
+			\xc{P}^{-1}\xc{A}\xc{e}_{*} = \bm{0}
+		$$
+		由于$\xc{P}^{-1}\xc{A}$非奇异，所以$\xc{e}_{*}$等于$\bm{0}$，所以迭代法收敛。\\
+		\\
+		(3)由上面得出的结论，分析Jacobi迭代方法以及GS迭代法的矩阵表达形式：
+		$$
+			\xc{x}^{(k+1)} = \xc{D}^{-1}(\xc{L}+\xc{U})\xc{x}^{(k)} + \xc{D}^{-1}b = (\xc{I} -  \xc{D}^{-1}\xc{A})\xc{x}^{(k)} + \xc{D}^{-1}\xc{b} \qquad (Jacobi)
+		$$
+		$$
+			\xc{x}^{(k+1)} = (\xc{I} - (\xc{D}-\xc{L})^{-1}\xc{A})\xc{x}^{(k)} + (\xc{D} -\xc{L})^{-1}\xc{b} \qquad (GS)
+		$$
+		可以看出我们只需要保证$\xc{A}$正定，并分别保证$2\xc{D} - \xc{A}$以及$2(\xc{D}- \xc{L}) - \xc{A}$正定即可。\\
+		\\
+		
+		\item[3.]对$n = 10, 20, 40$, 五对角矩阵
+		$$
+			\xc{A} = \begin{bmatrix}
+			-20 & -8 & 1 & \quad & \quad & \quad & \quad \\
+			-8 & -20 & -8 & 1 & \quad & \quad & \quad \\
+			1 &-8 & -20 & -8 & 1 & \quad & \quad \\
+			\quad & \ddots &  \ddots &  \ddots &  \ddots & \ddots &\quad \\
+			 \quad & \quad &1 &-8 & -20 & -8 & 1\\
+			 \quad & \quad & \quad & 1 & -8 & 20 & -8\\
+			 \quad & \quad & \quad & \quad & 1 & -8 & 20\\
+			\end{bmatrix} \in \mathbb{R}^{n\times n}
+		$$
+		分别用 Jacobi 迭代与 Gauss-Seidel 迭代求解线性方程组 $\xc{Ax} = \textbf{0}$. 取初值 $\xc{x}_0 =(1, 1, · · · , 1)^T \in \mathbb{R}_n,$ 迭代至 $\|\xc{x}^{(k)} - \xc{x}_*\|_{\infty}\le10^{-8}$止, 试比较两种方法的迭代次数和收敛速度.\\
+		\\
+		显然$\xc{A}$是可逆的，所以即比较两种迭代方式趋近于$\textbf{0}$的速度，首先编写Jacobi迭代法的代码：
+		\begin{lstlisting}
+		function res = Jacobi(n)
+		L =-(diag(ones(1, n - 2), -2) + diag(-8 .* ones(1, n - 1), -1));
+		U = L';
+		D = diag(ones(1, n).* 20);
+		x = ones(1, n)';
+		x1 = x;
+		eps = 1e-8;
+		cnt = 0;
+		b = zeros(1,n)';
+		q = norm( D\(L + U), inf);
+		while (1)
+		x1 =  D\((L + U) * x +  b);
+		cnt = cnt + 1;
+		q1 = norm(x1 - x, inf);
+		if(abs(q/ (1-q) * q1) < eps) 
+		break;
+		end
+		x = x1;
+		end
+		res = x;
+		fprintf("iteration times: %d\n",cnt);
+		end
+		\end{lstlisting}
+		在输入为$n = 10, 20, 40$时分别得到结果：\\
+		iteration times: 58 \\
+		iteration times: 106 \\
+		iteration times: 133\\
+		作为对比，编写GS迭代法的代码：
+		\begin{lstlisting}
+		function res = Gauss(n)
+		L =-(diag(ones(1, n - 2), -2) + diag(-8 .* ones(1, n - 1), -1));
+		U = L';
+		D = diag(ones(1, n).* 20);
+		x = ones(1, n)';
+		x1 = x;
+		eps = 1e-8;
+		cnt = 0;
+		b = zeros(1,n)';
+		q = norm((D - L) \ U, inf);
+		while(1)
+		x1 = (D - L) \ (U * x + b);
+		q1 = norm(x1 - x, inf);
+		cnt = cnt + 1;
+		if(abs(q/(1-q) * q1 )< eps)
+		break;
+		end
+		x = x1;
+		end
+		fprintf("iteration times: %d\n", cnt);
+		res = x1;
+		end
+		\end{lstlisting}
+		同样分别输入$n = 10, 20, 40$，得到结果：\\
+		iteration times: 28\\
+		iteration times: 31\\
+		iteration times: 31\\
+		相比较而言显然GS迭代法收敛速度更快。
+	\end{itemize}
+\end{document}
